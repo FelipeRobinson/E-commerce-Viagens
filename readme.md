@@ -10,7 +10,7 @@ O projeto trata do **Oceanun**, uma agência de viagens, e reúne a documentaç�
 
 O projeto está hospedado no github pages com acesso:
 
-[![Acessar o site](https://img.shields.io/badge/Acessar%20o%20site-Oceanun-0077B6?style=for-the-badge)](./Website/index.html)
+[![Acessar o site](https://img.shields.io/badge/Acessar%20o%20site-Oceanun-0077B6?style=for-the-badge)](https://feliperobinson.github.io/E-commerce-Viagens/Website/index.html)
 
 ---
 
@@ -101,6 +101,9 @@ O MER do Oceanun é composto por 11 entidades:
 | Nome | GitHub |
 |---|---|
 |Gabriel Barbosa | github.com/gabriel15vitor |
+|Felipe Robinson | github.com/feliperobinson |
+|Kevin Wu        | github.com/Kevinwu0310    |
+|Matheus Silva   | github.com/Matheus-57     |
 
 ---
 
