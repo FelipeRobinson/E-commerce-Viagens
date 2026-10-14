@@ -6,6 +6,14 @@ O projeto trata do **Oceanun**, uma agência de viagens, e reúne a documentaç�
 
 ---
 
+## Acessar o projeto
+
+O projeto está hospedado no github pages com acesso:
+
+[![Acessar o site](https://img.shields.io/badge/Acessar%20o%20site-Oceanun-0077B6?style=for-the-badge)](./Website/index.html)
+
+---
+
 ## Sobre o projeto
 
 O sistema é uma ferramenta interna da agência, usada por **atendentes** e **gestores** para:
