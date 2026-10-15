@@ -74,15 +74,14 @@ O MER do Oceanun é composto por 11 entidades:
 
 | Código | Requisito |
 |---|---|
-| RF01 | Gestão de cadastro de usuários |
-| RF02 | Autenticação e controle de acesso |
-| RF03 | Cadastro de clientes |
-| RF04 | Consulta de clientes |
-| RF05 | Atualização de dados do cliente |
-| RF06 | Criação de tarefas e lembretes |
-| RF07 | Acompanhamento por fases do atendimento |
-| RF08 | Notificação de prazos |
-| RF09 | Análise de vendas |
+| RF09 | Relatórios e análise de vendas |
+| RF11 | Gestão de cadastro de colaboradores |
+| RF12 | Autenticação e controle de acesso |
+| RF13 | Consulta de clientes e histórico |
+| RF14 | Criação de tarefas e lembretes |
+| RF15 | Acompanhamento por fases do atendimento |
+| RF16 | Notificação de prazos |
+| RF17 | Cadastro e atualização de clientes por atendentes |
 
 ---
 

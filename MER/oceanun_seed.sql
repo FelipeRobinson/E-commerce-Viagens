@@ -1,5 +1,5 @@
 -- =====================================================================
--- DDL MySQL 8.0+ - Sistema de atendimento e vendas de pacotes de viagem
+-- DDL MySQL 8.0.16+ - Sistema de atendimento e vendas de pacotes de viagem
 -- =====================================================================
 
 DROP DATABASE IF EXISTS oceanun;
@@ -9,7 +9,7 @@ CREATE DATABASE oceanun
 USE oceanun;
 
 -- ---------------------------------------------------------------------
--- USUARIO (RF01, RF02)
+-- USUARIO (RF11, RF12)
 -- ---------------------------------------------------------------------
 CREATE TABLE usuario (
     id_usuario        INT UNSIGNED  NOT NULL AUTO_INCREMENT,
@@ -29,7 +29,7 @@ CREATE TABLE usuario (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- TOKEN_REDEFINICAO (RF02 - redefinicao de senha com token de uso unico)
+-- TOKEN_REDEFINICAO (RF12 - redefinicao de senha com token de uso unico)
 -- ---------------------------------------------------------------------
 CREATE TABLE token_redefinicao (
     id_token    INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -45,7 +45,7 @@ CREATE TABLE token_redefinicao (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- ETAPA_FUNIL (RF07)
+-- ETAPA_FUNIL (RF15)
 -- ---------------------------------------------------------------------
 CREATE TABLE etapa_funil (
     id_etapa  INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -57,7 +57,7 @@ CREATE TABLE etapa_funil (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- CLIENTE (RF03, RF04, RF05)
+-- CLIENTE (RF03, RF13, RF17)
 -- ---------------------------------------------------------------------
 CREATE TABLE cliente (
     id_cliente             INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -93,7 +93,7 @@ CREATE TABLE destino (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- INTERESSE_DESTINO (N:N cliente x destino - filtro do RF04)
+-- INTERESSE_DESTINO (N:N cliente x destino - filtro do RF13)
 -- ---------------------------------------------------------------------
 CREATE TABLE interesse_destino (
     id_cliente  INT UNSIGNED NOT NULL,
@@ -123,7 +123,7 @@ CREATE TABLE pacote (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- TAREFA (RF06, RF08)
+-- TAREFA (RF14, RF16)
 -- ---------------------------------------------------------------------
 CREATE TABLE tarefa (
     id_tarefa     INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -143,7 +143,7 @@ CREATE TABLE tarefa (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- HISTORICO (RF04, RF05, RF06, RF07)
+-- HISTORICO (RF13, RF14, RF15, RF17)
 -- ---------------------------------------------------------------------
 CREATE TABLE historico (
     id_historico  INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -212,7 +212,7 @@ CREATE TABLE comissao (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- Dados iniciais: etapas do funil (exemplos do RF07)
+-- Dados iniciais: etapas do funil (exemplos do RF15)
 -- ---------------------------------------------------------------------
 INSERT INTO etapa_funil (nome, ordem) VALUES
     ('Prospecção', 1),
