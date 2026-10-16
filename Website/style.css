@@ -3,8 +3,8 @@
     --dark-blue: #0a1fa8;
     --accent: #fbbf4b;
     --secondary-color: #fff;
-    --title-font: "Brice BoldCondensed";
-    --text-font: "Inter";
+    --title-font: "Oswald", sans-serif;
+    --text-font: "Inter", sans-serif;
 }
 
 * { box-sizing: border-box; }
