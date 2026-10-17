@@ -1,15 +1,15 @@
 // Seleção do tipo de viagem
-document.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        document.querySelector('.volta').style.display =
-            chip.textContent === 'Só ida' ? 'none' : '';
+document.querySelectorAll('.opcao').forEach(opcao => {
+    opcao.addEventListener('click', () => {
+        document.querySelectorAll('.opcao').forEach(o => o.classList.remove('ativo'));
+        opcao.classList.add('ativo');
+        document.getElementById('volta').style.display =
+            opcao.textContent === 'Só ida' ? 'none' : '';
     });
 });
 
 // Inverter origem e destino
-document.getElementById('swap').addEventListener('click', () => {
+document.getElementById('trocar').addEventListener('click', () => {
     const origem = document.getElementById('origem');
     const destino = document.getElementById('destino');
     [origem.value, destino.value] = [destino.value, origem.value];
