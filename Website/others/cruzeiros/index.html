@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart-style.css">
+    <link rel="icon" href="../../img/image.png">
+    <title>Oceanun - Cruzeiros</title>
+</head>
+<body>
+    <nav>
+        <a href="../../index.html" class="logo">
+            <img src="../../img/image.png" alt="Logo Oceanun">
+            <span>Oceanun</span>
+        </a>
+        <ul class="menu">
+            <li><a href="../../index.html">Início</a></li>
+            <li><a href="index.html" style="color: var(--amarelo);">Cruzeiros</a></li>
+            <li><a href="../pacotes/index.html">Pacotes</a></li>
+        </ul>
+        <div class="acoes">
+            <form class="pesquisa" role="search">
+                <input type="text" placeholder="Pesquisar">
+                <button type="submit" aria-label="Pesquisar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+            <a href="#" class="icone" aria-label="Carrinho">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="cart-count" class="cart-badge">0</span>
+            </a>
+            <a href="../perfil/index.html" class="icone" aria-label="Minha conta">
+                <i class="fa-solid fa-circle-user"></i>
+            </a>
+        </div>
+    </nav>
+
+    <main class="cruzeiros-page">
+        <section class="header-section">
+            <h1>Nossos <span class="highlight">Cruzeiros</span></h1>
+            <p>Explore as águas do mundo com o conforto e a elegância da Oceanun.</p>
+        </section>
+
+        <div id="cards">
+            <article class="card">
+                <img src="../../img/travel/Ocenun(1).png" alt="Navio Costa Diadema">
+                <div class="card-info">
+                    <h3 class="cruise-name">Costa Diadema</h3>
+                    <p>Embarque e desembarque: Santos</p>
+                    <p class="data">Data: 10 a 13/12/2026</p>
+                    <button class="btn amarelo add-to-cart">Adicionar ao Carrinho</button>
+                </div>
+            </article>
+            <article class="card">
+                <img src="../../img/travel/Ocenun(2).png" alt="Navio MSC Divina">
+                <div class="card-info">
+                    <h3 class="cruise-name">MSC Divina</h3>
+                    <p>Embarque e desembarque: Santos</p>
+                    <p class="data">Data: 09 a 12/02/2027</p>
+                    <button class="btn amarelo add-to-cart">Adicionar ao Carrinho</button>
+                </div>
+            </article>
+            <article class="card">
+                <img src="../../img/travel/Ocenun(3).png" alt="Navio MSC Virtuosa">
+                <div class="card-info">
+                    <h3 class="cruise-name">MSC Virtuosa</h3>
+                    <p>Embarque e desembarque: Santos</p>
+                    <p class="data">Data: 01 a 04/04/2027</p>
+                    <button class="btn amarelo add-to-cart">Adicionar ao Carrinho</button>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Oceanun. Todos os direitos reservados.</p>
+    </footer>
+    <button id="chat" aria-label="ChatBot"><i class="fa-solid fa-comments"></i></button>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,122 +1,264 @@
-/* CORES E FONTES */
 :root {
-    --azul: #0153c2;
-    --azul-escuro: #0a1fa8;
-    --amarelo: #fbbf4b;
-    --branco: #fff;
-    --fonte-titulo: "Brice BoldCondensed";
-    --fonte-texto: "Inter";
+    --primary-blue: #0754C4;
+    --secondary-blue: #6695D0;
+    --accent-orange: #FFB84D;
+    --text-blue: #2414C6;
+    --white: #FFFFFF;
+    --black: #000000;
+    --font-condensed: 'Oswald', sans-serif;
+    --font-main: 'Inter', sans-serif;
 }
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: var(--fonte-texto);
-    margin: 0;
+    font-family: var(--font-main);
+    background-color: var(--white);
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    overflow-x: hidden;
 }
 
-/* NAV */
-nav {
-    background: var(--azul);
-    padding: 0.6rem 3%;
+/* Primary Navigation */
+.primary-nav {
+    height: 63px;
+    background-color: var(--primary-blue);
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding: 0 3%;
+    color: var(--white);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 100;
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--branco);
+    gap: 10px;
     text-decoration: none;
-    font-family: var(--fonte-titulo);
-    font-size: 2.2rem;
+    color: var(--white);
+    font-family: var(--font-condensed);
+    font-weight: bold;
+    font-size: 24px;
 }
 
 .logo img {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
 }
 
-.menu {
+.nav-links {
     display: flex;
-    gap: clamp(2rem, 5vw, 6rem);
     list-style: none;
-    margin-left: auto;
-    padding: 0;
+    gap: 30px;
 }
 
-.menu a {
-    color: var(--branco);
+.nav-links a {
+    color: var(--white);
     text-decoration: none;
-    font-family: var(--fonte-titulo);
-    font-size: 1.15rem;
+    font-family: var(--font-condensed);
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 16px;
 }
 
-.menu a:hover {
-    color: var(--amarelo);
+.nav-links a:hover {
+    color: var(--accent-orange);
 }
 
-.acoes {
-    margin-left: 5vh;
+.nav-actions {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 15px;
 }
 
-.pesquisa {
+.search-field {
     display: flex;
     align-items: center;
-    background: var(--branco);
+    background: var(--white);
     border-radius: 20px;
-    padding: 0 0.6rem 0 1.2rem;
+    padding: 0 10px;
     height: 36px;
 }
 
-.pesquisa input {
+.search-field input {
     border: none;
     outline: none;
-    width: 210px;
-    font-size: 1rem;
     background: transparent;
+    font-size: 14px;
+    width: 150px;
 }
 
-.pesquisa input::placeholder {
-    color: #222;
-}
-
-.pesquisa button {
+.search-field button {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
-    display: flex;
-    font-size: 22px;
+    color: var(--black);
 }
 
-.icone {
-    color: var(--branco);
-    display: flex;
-    font-size: 34px;
+.action-icon {
+    color: var(--white);
+    font-size: 24px;
     text-decoration: none;
 }
 
-/* FOOTER */
+/* Secondary Navigation */
+.secondary-nav {
+    height: 47px;
+    background-color: var(--secondary-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 63px;
+    z-index: 90;
+}
 
-/* RODAPÉ */
-footer {
-    background: var(--azul);
-    color: var(--branco);
-    text-align: center;
-    margin-top: 20vh;
-    padding: 1rem;
+.secondary-links {
+    display: flex;
+    list-style: none;
+    gap: 40px;
+}
+
+.secondary-links a {
+    color: var(--accent-orange);
+    text-decoration: none;
+    font-family: var(--font-condensed);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+.secondary-links a.active {
+    text-decoration: underline;
+}
+
+/* Profile Content */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 100px;
+}
+
+.profile-avatar {
+    margin: 40px 0 30px 0;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 5px solid var(--accent-orange);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100px;
+    color: var(--accent-orange);
+}
+
+.profile-info {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    width: 100%;
+}
+
+.info-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.col-1 {
+    position: static;
+}
+
+.col-2 {
+    position: static;
+}
+
+.data-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.label {
+    font-family: var(--font-condensed);
+    font-weight: bold;
+    font-size: 32px;
+    color: var(--text-blue);
+    line-height: 1.2;
+}
+
+.value {
+    font-family: var(--font-condensed);
+    font-weight: bold;
+    font-size: 20px;
+    color: var(--black);
+}
+
+/* Floating Chat */
+.floating-chat {
+    position: fixed;
+    bottom: 9px;
+    right: 10px;
+    width: 73px;
+    height: 73px;
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-condensed);
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+
+/* Responsiveness */
+@media (max-width: 996px) {
+    .profile-info {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .info-column {
+        position: static;
+        margin-bottom: 30px;
+    }
+
+    .profile-avatar {
+        position: static;
+        margin: 20px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        height: 150px;
+        font-size: 80px;
+    }
+
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .col-1, .col-2 {
+        position: static;
+        left: auto;
+    }
 }

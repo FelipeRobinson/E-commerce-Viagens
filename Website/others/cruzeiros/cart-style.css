@@ -1,0 +1,25 @@
+.cart-badge {
+    background-color: var(--amarelo);
+    color: var(--azul-escuro);
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2px 6px;
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.icone {
+    position: relative;
+}
+
+.add-to-cart {
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.add-to-cart:active {
+    transform: scale(0.95);
+}

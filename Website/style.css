@@ -114,7 +114,6 @@ nav {
 #inicio {
     flex: 1;
     background: var(--azul);
-    margin-top: 4rem;
     padding: 1.5rem 3rem 0.6rem;
 }
 
@@ -262,17 +261,21 @@ nav {
 /* BOTÕES */
 .btn {
     font-family: var(--fonte-titulo);
-    font-size: 2rem;
+    font-size: clamp(1.2rem, 2vw, 2rem);
     text-decoration: none;
     border: none;
     border-radius: 999px;
     width: 100%;
-    height: 7vh;
+    min-height: 7vh;
+    height: auto;
     margin: 2vh;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    line-height: 1.2;
 }
 
 .btn:hover {
@@ -297,18 +300,17 @@ nav {
 }
 
 .cta .btn {
-    width: 50vh;
+    width: clamp(300px, 40vw, 50vh);
 }
 
 /* PACOTES */
 #pacotes {
     background: var(--azul);
     color: var(--branco);
-    margin-top: 30vh;
     padding: 2rem 3rem;
     display: flex;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .pacotes-info {
@@ -412,7 +414,6 @@ footer {
     background: var(--azul);
     color: var(--branco);
     text-align: center;
-    margin-top: 20vh;
     padding: 1rem;
 }
 
