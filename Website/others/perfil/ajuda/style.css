@@ -1,0 +1,107 @@
+.help-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: calc(100vh - 110px);
+}
+
+.page-title {
+    font-family: var(--font-condensed);
+    font-size: 3rem;
+    color: var(--text-blue);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.page-title .highlight {
+    color: var(--primary-blue);
+}
+
+.help-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+.help-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.help-card:hover {
+    transform: translateY(-5px);
+}
+
+.help-card i {
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 0.5rem;
+}
+
+.help-card h3 {
+    font-family: var(--font-condensed);
+    color: var(--text-blue);
+    margin: 0;
+}
+
+.help-card p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.contact-section {
+    text-align: center;
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+.contact-section h2 {
+    font-family: var(--font-condensed);
+    color: var(--text-blue);
+    margin-bottom: 1rem;
+}
+
+.contact-section p {
+    margin-bottom: 1.5rem;
+    color: #666;
+}
+
+.btn-contact {
+    display: inline-block;
+    background-color: #25D366;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: var(--font-condensed);
+    transition: opacity 0.2s;
+}
+
+.btn-contact:hover {
+    opacity: 0.9;
+}
+
+body {
+    background-color: var(--secondary-blue);
+}

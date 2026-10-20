@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oceanun - Central de Ajuda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="../../img/image.png">
+</head>
+<body>
+    <header>
+        <nav class="primary-nav">
+            <a href="../../index.html" class="logo">
+                <img src="../../img/image.png" alt="Logo Oceanun">
+                <span>Oceanun</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Início</a></li>
+                <li><a href="../cruzeiros/index.html">Cruzeiros</a></li>
+                <li><a href="../pacotes/index.html">Pacotes</a></li>
+            </ul>
+            <div class="nav-actions">
+                <form class="search-field">
+                    <input type="text" placeholder="Pesquisar">
+                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+                <a href="../carrinho/index.html" class="action-icon" aria-label="Carrinho">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </a>
+                <a href="../index.html" class="action-icon" aria-label="Perfil">
+                    <i class="fa-solid fa-circle-user"></i>
+                </a>
+            </div>
+        </nav>
+        <nav class="secondary-nav">
+            <ul class="secondary-links">
+                <li><a href="../index.html">Perfil</a></li>
+                <li><a href="../viagens/index.html">Viagens</a></li>
+                <li><a href="index.html" class="active">Central de ajuda</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="help-container">
+        <h1 class="page-title">Central de <span class="highlight">Ajuda</span></h1>
+
+        <div class="help-grid">
+            <div class="help-card">
+                <i class="fa-solid fa-ship"></i>
+                <h3>Reservas</h3>
+                <p>Como fazer, alterar ou cancelar sua reserva de cruzeiro.</p>
+            </div>
+            <div class="help-card">
+                <i class="fa-solid fa-passport"></i>
+                <h3>Documentação</h3>
+                <p>Quais documentos são necessários para cada destino.</p>
+            </div>
+            <div class="help-card">
+                <i class="fa-solid fa-credit-card"></i>
+                <h3>Pagamentos</h3>
+                <p>Formas de pagamento, parcelamento e reembolsos.</p>
+            </div>
+            <div class="help-card">
+                <i class="fa-solid fa-suitcase"></i>
+                <h3>Bagagens</h3>
+                <p>Regras de peso, itens permitidos e proibidos a bordo.</p>
+            </div>
+        </div>
+
+        <div class="contact-section">
+            <h2>Ainda precisa de ajuda?</h2>
+            <p>Nossa equipe está pronta para atender você.</p>
+            <a href="https://wa.me/5519978194930" class="btn-contact">Falar no WhatsApp</a>
+        </div>
+    </main>
+    <button id="chat" aria-label="ChatBot" class="floating-chat"><i class="fa-solid fa-comments"></i></button>
+</body>
+</html>
