@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oceanun - Minhas Viagens</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="../../img/image.png">
+</head>
+<body>
+    <header>
+        <nav class="primary-nav">
+            <a href="../../../index.html" class="logo">
+                <img src="../../../img/image.png" alt="Logo Oceanun">
+                <span>Oceanun</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../../../index.html">Início</a></li>
+                <li><a href="../../cruzeiros/index.html">Cruzeiros</a></li>
+                <li><a href="../../pacotes/index.html">Pacotes</a></li>
+            </ul>
+            <div class="nav-actions">
+                <form class="search-field">
+                    <input type="text" placeholder="Pesquisar">
+                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+                <a href="../carrinho/index.html" class="action-icon" aria-label="Carrinho">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </a>
+                <a href="../index.html" class="action-icon" aria-label="Perfil">
+                    <i class="fa-solid fa-circle-user"></i>
+                </a>
+            </div>
+        </nav>
+        <nav class="secondary-nav">
+            <ul class="secondary-links">
+                <li><a href="../index.html">Perfil</a></li>
+                <li><a href="index.html" class="active">Viagens</a></li>
+                <li><a href="#">Central de ajuda</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="trips-container">
+        <h1 class="page-title">Minhas <span class="highlight">Viagens</span></h1>
+
+        <div class="trips-list">
+            <!-- Past Trip 1 -->
+            <div class="trip-card">
+                <img src="../../../img/travel/Ocenun(1).png" alt="Viagem Passada">
+                <div class="trip-info">
+                    <h3>Costa Diadema - Mediterrâneo</h3>
+                    <p class="trip-date">Janeiro 2025</p>
+                    <p class="trip-status">Concluída</p>
+                </div>
+            </div>
+
+            <!-- Past Trip 2 -->
+            <div class="trip-card">
+                <img src="../../../img/travel/Ocenun(2).png" alt="Viagem Passada">
+                <div class="trip-info">
+                    <h3>MSC Divina - Caribe</h3>
+                    <p class="trip-date">Maio 2024</p>
+                    <p class="trip-status">Concluída</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <button id="chat" aria-label="ChatBot" class="floating-chat"><i class="fa-solid fa-comments"></i></button>
+</body>
+</html>

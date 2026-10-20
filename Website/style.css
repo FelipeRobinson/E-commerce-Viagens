@@ -115,6 +115,7 @@ nav {
     flex: 1;
     background: var(--azul);
     padding: 1.5rem 3rem 0.6rem;
+    box-sizing: border-box;
 }
 
 #inicio h1 {
