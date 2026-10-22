@@ -134,6 +134,7 @@ Os requisitos funcionais estão organizados em dois grupos: funcionalidades de e
 | Felipe Robinson | [github.com/feliperobinson](https://github.com/feliperobinson) |
 | Kevin Wu | [github.com/Kevinwu0310](https://github.com/Kevinwu0310) |
 | Matheus Silva | [github.com/Matheus-57](https://github.com/Matheus-57) |
+| Geiza Morais | [github.com/m0ra1s](https://github.com/m0ra1s) |
 
 ---
 
