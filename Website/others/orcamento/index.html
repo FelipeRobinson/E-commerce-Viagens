@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="icon" href="../../img/image.png">
+    <title>Solicite seu Orçamento - Oceanun</title>
+    <style>
+        body {
+            background-color: #004a99; /* Ocean Blue */
+            font-family: 'Inter', sans-serif;
+        }
+        .orcamento-container {
+            padding: 120px 10% 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-card {
+            background: white;
+            width: 100%;
+            max-width: 700px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-header h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .form-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+            font-size: 0.9rem;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #ffcc00;
+            box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.2);
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: #ffcc00;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            background-color: #e6b800;
+            transform: translateY(-2px);
+        }
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            .orcamento-container {
+                padding: 100px 5% 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="../../index.html" class="logo">
+            <img src="../../img/image.png" alt="Logo Oceanun">
+            <span>Oceanun</span>
+        </a>
+        <ul class="menu">
+            <li><a href="../../index.html">Início</a></li>
+            <li><a href="../cruzeiros/index.html">Cruzeiros</a></li>
+            <li><a href="../pacotes/index.html">Pacotes</a></li>
+        </ul>
+        <div class="acoes">
+            <form class="pesquisa" role="search">
+                <input type="text" placeholder="Pesquisar">
+                <button type="submit" aria-label="Pesquisar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+            <a href="../carrinho/index.html" class="icone" aria-label="Carrinho">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
+            <a href="../perfil/index.html" class="icone" aria-label="Minha conta">
+                <i class="fa-solid fa-circle-user"></i>
+            </a>
+        </div>
+    </nav>
+
+    <main class="orcamento-container">
+        <div class="form-card">
+            <div class="form-header">
+                <h1>Solicite seu Orçamento</h1>
+                <p>Preencha os dados abaixo e nossa equipe entrará em contato para criar a viagem dos seus sonhos.</p>
+            </div>
+
+            <form id="budget-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" placeholder="Ex: João Silva" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" placeholder="email@exemplo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="whatsapp">WhatsApp</label>
+                        <input type="tel" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="destino">Destino de Interesse</label>
+                        <input type="text" id="destino" name="destino" placeholder="Ex: Caribe, Mediterrâneo">
+                    </div>
+                    <div class="form-group">
+                        <label for="data">Data Prevista</label>
+                        <input type="date" id="data" name="data">
+                    </div>
+                    <div class="form-group">
+                        <label for="viajantes">Número de Viajantes</label>
+                        <input type="number" id="viajantes" name="viajantes" min="1" value="1">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="mensagem">Observações Adicionais</label>
+                        <textarea id="mensagem" name="mensagem" rows="4" placeholder="Conte-nos mais sobre suas preferências..."></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">Enviar Solicitação</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Oceanun. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        document.getElementById('budget-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Solicitação enviada com sucesso! Nossa equipe entrará em contato em breve.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

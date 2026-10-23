@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="icon" href="../../img/image.png">
+    <title>Conheça a Oceanun - Oceanun</title>
+    <style>
+        body {
+            background-color: #004a99; /* Ocean Blue */
+            color: white;
+        }
+        .sobre-container {
+            padding: 100px 10% 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 30px;
+        }
+        .sobre-container h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .sobre-container p {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-width: 800px;
+        }
+
+        .valores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            width: 100%;
+            margin-top: 50px;
+        }
+        .valor-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .valor-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .valor-card i {
+            font-size: 2.5rem;
+            color: #ffcc00; /* Yellow from btn amarelo */
+            margin-bottom: 20px;
+        }
+        .valor-card h3 {
+            font-family: 'Oswald', sans-serif;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        .valor-card p {
+            color: #e0e0e0 !important;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="../../index.html" class="logo">
+            <img src="../../img/image.png" alt="Logo Oceanun">
+            <span>Oceanun</span>
+        </a>
+        <ul class="menu">
+            <li><a href="../../index.html">Início</a></li>
+            <li><a href="../cruzeiros/index.html">Cruzeiros</a></li>
+            <li><a href="../pacotes/index.html">Pacotes</a></li>
+        </ul>
+        <div class="acoes">
+            <form class="pesquisa" role="search">
+                <input type="text" placeholder="Pesquisar">
+                <button type="submit" aria-label="Pesquisar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+            <a href="../carrinho/index.html" class="icone" aria-label="Carrinho">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
+            <a href="../perfil/index.html" class="icone" aria-label="Minha conta">
+                <i class="fa-solid fa-circle-user"></i>
+            </a>
+        </div>
+    </nav>
+
+    <main class="sobre-container">
+        <h1>Conheça a <span style="color: #ffcc00;">Oceanun</span></h1>
+        <p>A Oceanun é mais do que uma agência de viagens; somos os arquitetos de memórias inesquecíveis. Especializados em cruzeiros e pacotes turísticos exclusivos, nossa missão é conectar você aos destinos mais deslumbrantes do planeta com conforto, segurança e sofisticação.</p>
+
+        <div class="valores">
+            <div class="valor-card">
+                <i class="fa-solid fa-earth-americas"></i>
+                <h3>Destinos Globais</h3>
+                <p>Parcerias com as maiores companhias de cruzeiros do mundo para levar você a todos os continentes.</p>
+            </div>
+            <div class="valor-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Segurança Total</h3>
+                <p>Curadoria rigorosa de cada pacote para garantir que sua única preocupação seja aproveitar a viagem.</p>
+            </div>
+            <div class="valor-card">
+                <i class="fa-solid fa-star"></i>
+                <h3>Experiência Premium</h3>
+                <p>Atendimento personalizado para que cada detalhe do seu roteiro seja exatamente como você sonhou.</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 60px;">
+            <a href="../../index.html" class="btn amarelo" style="text-decoration: none; padding: 15px 30px; border-radius: 5px; color: #000; font-weight: bold;">Voltar ao Início</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Oceanun. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
