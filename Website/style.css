@@ -15,6 +15,7 @@
 body {
     font-family: var(--fonte-texto);
     margin: 0;
+    background: var(--branco);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -115,15 +116,16 @@ nav {
     flex: 1;
     background: var(--azul);
     padding: 1.5rem 3rem 0.6rem;
+    margin-top: 4rem;
     box-sizing: border-box;
 }
 
 #inicio h1 {
     font-family: var(--fonte-titulo);
     color: var(--branco);
-    height: 10vh;
-    font-size: 3.3rem;
-    margin: 2vh 0 4vh 8vh;
+    height: auto;
+    font-size: 3rem;
+    margin: 1vh 0 2.5vh 8vh;
 }
 
 #inicio h1 span {
@@ -134,8 +136,8 @@ nav {
 .reserva {
     background: var(--branco);
     border-radius: 10px;
-    padding: 2rem;
-    min-height: 20vh;
+    padding: 1.5rem 2rem;
+    min-height: 16vh;
 }
 
 .tipos {
@@ -297,7 +299,7 @@ nav {
     display: flex;
     justify-content: center;
     gap: 9rem;
-    margin: 2rem 0;
+    margin: 1.5rem 0;
 }
 
 .cta .btn {
@@ -308,30 +310,95 @@ nav {
 #pacotes {
     background: var(--azul);
     color: var(--branco);
-    padding: 2rem 3rem;
+    padding: 7rem 3rem;
+    margin-top: 7rem;
+    margin-bottom: 5rem;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    min-height: 100vh;
+    justify-content: center;
+    gap: 4rem;
 }
 
 .pacotes-info {
+    flex: 0 0 300px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 2rem;
+    align-items: flex-start;
 }
 
 .pacotes-info img {
-    width: 130px;
-    margin-bottom: 1.5rem;
+    width: 180px;
+    margin-bottom: 2rem;
 }
 
 .pacotes-info h1 {
     font-family: var(--fonte-titulo);
-    font-size: 2rem;
-    margin: 0 0 10vh 0;
+    font-size: 2.8rem;
+    line-height: 1;
+    margin: 0;
+}
+
+.pacotes-info .subtitulo {
+    font-family: var(--fonte-titulo);
+    font-size: 1.3rem;
+    margin: 0.2rem 0 2rem;
+}
+
+.pacotes-info .btn {
+    min-height: 0;
+    margin: 0;
+    padding: 0.4rem 1rem;
+    font-size: 2.2rem;
+    line-height: 1.1;
+}
+
+#pacotes #cards {
+    flex: 0 1 1000px;
+    gap: 0.8rem;
+    margin-bottom: 0;
+}
+
+/* CARD COMPACTO (página inicial) */
+.card.compacto img {
+    aspect-ratio: 4 / 3.6;
+}
+
+.card.compacto .card-info {
+    padding: 1rem 0.6rem 0.7rem;
+}
+
+.card.compacto h3 {
+    font-family: var(--fonte-texto);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.card.compacto h3 i {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.card.compacto p {
+    font-size: 1.05rem;
+    color: #333;
+}
+
+.card.compacto .data {
+    margin: auto 0 0.4rem;
+    padding-top: 1rem;
+    font-weight: 400;
+}
+
+.card.compacto .btn {
+    padding: 0.15rem 0.5rem;
+    min-height: 0;
+    font-size: 1.7rem;
+    line-height: 1.1;
 }
 
 /* CARDS */
@@ -468,6 +535,12 @@ footer {
     }
     .pacotes-info {
         flex-basis: auto;
+        align-items: center;
+        text-align: center;
+    }
+    #pacotes #cards {
+        flex-basis: auto;
+        width: 100%;
     }
     #cards {
         grid-template-columns: 1fr;

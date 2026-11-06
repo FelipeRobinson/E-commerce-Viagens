@@ -74,6 +74,28 @@ const Catalogo = (() => {
     }
 
     // ---------- Renderização ----------
+    // Card resumido da página inicial: imagem, nome, embarque, data e "Contratar Pacote"
+    function cardCompacto(p) {
+        const el = document.createElement('article');
+        el.className = 'card compacto';
+        el.innerHTML = `
+            <img src="${img(p)}" alt="Navio ${p.navio}">
+            <div class="card-info">
+                <h3><i class="fa-solid fa-ship"></i> ${p.navio}</h3>
+                <p>Embarque e desembarque: ${p.embarque}</p>
+                <p class="data">Data: ${periodo(p)}</p>
+                <button class="btn amarelo add-to-cart">Contratar Pacote</button>
+            </div>`;
+        const btn = el.querySelector('.add-to-cart');
+        btn.addEventListener('click', () => {
+            adicionar(p.id);
+            btn.textContent = 'Adicionado!';
+            btn.classList.add('adicionado');
+            setTimeout(() => { btn.textContent = 'Contratar Pacote'; btn.classList.remove('adicionado'); }, 1500);
+        });
+        return el;
+    }
+
     function card(p) {
         const el = document.createElement('article');
         el.className = 'card';
@@ -98,7 +120,7 @@ const Catalogo = (() => {
         return el;
     }
 
-    function renderizar(container, lista) {
+    function renderizar(container, lista, { compacto = false } = {}) {
         if (typeof container === 'string') container = document.querySelector(container);
         if (!container) return;
         container.innerHTML = '';
@@ -106,7 +128,7 @@ const Catalogo = (() => {
             container.innerHTML = '<p class="sem-resultados">Nenhum pacote encontrado com esses filtros.</p>';
             return;
         }
-        lista.forEach(p => container.appendChild(card(p)));
+        lista.forEach(p => container.appendChild(compacto ? cardCompacto(p) : card(p)));
     }
 
     // Menu principal: item "Imperdíveis" com submenu dos pacotes em destaque

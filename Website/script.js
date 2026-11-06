@@ -16,7 +16,7 @@ document.getElementById('trocar').addEventListener('click', () => {
 });
 
 // "Pacotes imperdíveis": vêm da biblioteca js/pacotes-db.js (destaque: true)
-Catalogo.renderizar('#cards', Catalogo.destaques());
+Catalogo.renderizar('#cards', Catalogo.destaques().slice(0, 3), { compacto: true });
 
 // Formulário de reserva -> busca na página de pacotes
 document.getElementById('form-reserva').addEventListener('submit', e => {
