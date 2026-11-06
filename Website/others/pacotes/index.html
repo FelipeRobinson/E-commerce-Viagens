@@ -32,7 +32,6 @@
             </form>
             <a href="../carrinho/index.html" class="icone" aria-label="Carrinho">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span id="cart-count" class="cart-badge">0</span>
             </a>
             <a href="../perfil/index.html" class="icone" aria-label="Minha conta">
                 <i class="fa-solid fa-circle-user"></i>
@@ -46,35 +45,18 @@
             <p>Experiências exclusivas e imperdíveis para quem busca o melhor do luxo e aventura.</p>
         </section>
 
-        <div id="cards">
-            <article class="card">
-                <img src="../../img/pacotes/europa-classica.jpg" alt="Pacote Europa Clássica">
-                <div class="card-info">
-                    <h3 class="pacote-name">Europa Clássica</h3>
-                    <p>Destinos: Itália, França e Espanha</p>
-                    <p class="data">Duração: 15 dias</p>
-                    <button class="btn amarelo add-to-cart">Adicionar ao Carrinho</button>
-                </div>
-            </article>
-            <article class="card">
-                <img src="../../img/pacotes/caribe-paradiso.jpg" alt="Pacote Caribe Paradiso">
-                <div class="card-info">
-                    <h3 class="pacote-name">Caribe Paradiso</h3>
-                    <p>Destinos: Bahamas e Jamaica</p>
-                    <p class="data">Duração: 7 dias</p>
-                    <button class="btn amarelo add-to-cart">Adicionar ao Carrinho</button>
-                </div>
-            </article>
-            <article class="card">
-                <img src="../../img/pacotes/asia-mistica.jpg" alt="Pacote Ásia Mística">
-                <div class="card-info">
-                    <h3 class="pacote-name">Ásia Mística</h3>
-                    <p>Destinos: Japão, China e Tailândia</p>
-                    <p class="data">Duração: 20 dias</p>
-                    <button class="btn amarelo add-to-cart">Adicionar ao Carrinho</button>
-                </div>
-            </article>
-        </div>
+        <form id="filtros" class="filtros">
+            <input type="search" name="q" placeholder="Navio, destino, serviço...">
+            <select name="destino"><option value="">Todos os destinos</option></select>
+            <select name="servico"><option value="">Qualquer serviço</option></select>
+            <label>Ida a partir de <input type="date" name="inicio"></label>
+            <label>Pessoas <input type="number" name="pessoas" min="1" placeholder="1"></label>
+            <label>Até R$ <input type="number" name="max" min="0" step="100" placeholder="sem limite"></label>
+            <label class="check"><input type="checkbox" name="destaque" value="1"> Só imperdíveis</label>
+            <button type="reset" class="btn branco">Limpar</button>
+        </form>
+        <p id="contagem" class="contagem"></p>
+        <div id="cards"></div>
     </main>
 
     <footer>
@@ -82,6 +64,8 @@
     </footer>
     <button id="chat" aria-label="ChatBot"><i class="fa-solid fa-comments"></i></button>
 
+    <script src="../../js/pacotes-db.js"></script>
+    <script src="../../js/catalogo.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -15,39 +15,18 @@ document.getElementById('trocar').addEventListener('click', () => {
     [origem.value, destino.value] = [destino.value, origem.value];
 });
 
-// Funcionalidade de Adicionar ao Carrinho
-document.addEventListener('DOMContentLoaded', () => {
-    const cartButtons = document.querySelectorAll('.add-to-cart');
-    const cartCountElement = document.getElementById('cart-count');
-    let cartCount = 0;
+// "Pacotes imperdíveis": vêm da biblioteca js/pacotes-db.js (destaque: true)
+Catalogo.renderizar('#cards', Catalogo.destaques());
 
-    cartButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Get the item name from the sibling h3
-            const itemName = button.closest('.card-info').querySelector('h3').innerText;
-
-            cartCount++;
-            updateCartUI();
-
-            // Visual feedback
-            const originalText = button.innerText;
-            button.innerText = 'Adicionado!';
-            button.style.backgroundColor = '#4CAF50'; // Green
-            button.style.color = 'white';
-
-            setTimeout(() => {
-                button.innerText = originalText;
-                button.style.backgroundColor = '';
-                button.style.color = '';
-            }, 1500);
-
-            console.log(`Added ${itemName} to cart. Total items: ${cartCount}`);
-        });
-    });
-
-    function updateCartUI() {
-        if (cartCountElement) {
-            cartCountElement.innerText = cartCount;
-        }
-    }
+// Formulário de reserva -> busca na página de pacotes
+document.getElementById('form-reserva').addEventListener('submit', e => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    const destino = document.getElementById('destino').value.trim();
+    const ida = document.getElementById('ida').value;
+    const viajantes = document.getElementById('viajantes').value;
+    if (destino) params.set('q', destino);
+    if (ida) params.set('inicio', ida);
+    if (viajantes > 1) params.set('pessoas', viajantes);
+    window.location.href = 'others/pacotes/index.html?' + params;
 });

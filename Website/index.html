@@ -38,7 +38,7 @@
     </nav>
     <section id="inicio">
         <h1>Sua próxima aventura <span>começa aqui</span></h1>
-        <form class="reserva">
+        <form class="reserva" id="form-reserva">
             <div class="tipos">
                 <button type="button" class="opcao ativo">Ida e volta</button>
                 <button type="button" class="opcao">Só ida</button>
@@ -53,12 +53,12 @@
                     <input type="text" placeholder="Destino" id="destino">
                 </div>
                 <div class="campo datas">
-                    <label><span>Ida</span><input type="date"></label>
-                    <label id="volta"><span>Volta</span><input type="date"></label>
+                    <label><span>Ida</span><input type="date" id="ida"></label>
+                    <label id="volta"><span>Volta</span><input type="date" id="data-volta"></label>
                 </div>
                 <label class="campo viajantes">
                     <small>Viajantes</small>
-                    <input type="number" min="1" value="1">
+                    <input type="number" min="1" value="1" id="viajantes">
                 </label>
                 <button type="submit" class="buscar">Buscar</button>
             </div>
@@ -69,39 +69,11 @@
         </div>
     </section>
     <section id="pacotes">
-        <div id="cards">
-            <article class="card">
-                <img src="./img/travel/Ocenun(1).png" alt="Navio Costa Diadema">
-                <div class="card-info">
-                    <h3>Costa Diadema</h3>
-                    <p>Embarque e desembarque: Santos</p>
-                    <p class="data">Data: 10 a 13/12/2026</p>
-                    <button class="btn amarelo add-to-cart">Adicionar ao Carrinho</button>
-                </div>
-            </article>
-            <article class="card">
-                <img src="./img/travel/Ocenun(2).png" alt="Navio MSC Divina">
-                <div class="card-info">
-                    <h3>MSC Divina</h3>
-                    <p>Embarque e desembarque: Santos</p>
-                    <p class="data">Data: 09 a 12/02/2027</p>
-                    <button class="btn amarelo add-to-cart">Adicionar ao Carrinho</button>
-                </div>
-            </article>
-            <article class="card">
-                <img src="./img/travel/Ocenun(3).png" alt="Navio MSC Virtuosa">
-                <div class="card-info">
-                    <h3>MSC Virtuosa</h3>
-                    <p>Embarque e desembarque: Santos</p>
-                    <p class="data">Data: 01 a 04/04/2027</p>
-                    <button class="btn amarelo add-to-cart">Adicionar ao Carrinho</button>
-                </div>
-            </article>
-        </div>
+        <div id="cards"><!-- preenchido por js/catalogo.js a partir de js/pacotes-db.js --></div>
         <div class="pacotes-info">
             <img src="./img/navio.png" alt="Navio">
             <h1>PACOTES IMPERDÍVEIS</h1>
-            <button href="#" class="btn amarelo">Mais Pacotes</button>
+            <a href="others/pacotes/index.html" class="btn amarelo">Mais Pacotes</a>
         </div>
     </section>
     <button id="chat" aria-label="ChatBot"><i class="fa-solid fa-comments"></i></button>
@@ -109,6 +81,8 @@
         <p>&copy; 2026 Oceanun. Todos os direitos reservados.</p>
     </footer>
 
+    <script src="js/pacotes-db.js"></script>
+    <script src="js/catalogo.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
