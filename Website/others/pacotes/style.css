@@ -1,23 +1,27 @@
 .pacotes-page {
-    background: var(--azul);
+    width: 100%;
+    max-width: 1320px;
     min-height: 90vh;
-    padding: 3rem 3rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 2rem 3rem 7rem;
+    background: var(--branco);
+    color: #111;
 }
 
+/* CABEÇALHO */
 .header-section {
-    text-align: center;
-    color: var(--branco);
+    background: var(--azul);
+    border-radius: 16px;
+    padding: 3.5rem 3rem;
     margin-bottom: 4rem;
 }
 
 .header-section h1 {
     font-family: var(--fonte-titulo);
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
+    font-size: 3.2rem;
+    line-height: 1.1;
+    color: var(--branco);
+    margin: 0 0 1rem;
 }
 
 .header-section .highlight {
@@ -25,85 +29,191 @@
 }
 
 .header-section p {
-    font-size: 1.2rem;
-    opacity: 0.9;
+    font-size: 1rem;
+    color: var(--branco);
+    margin: 0;
 }
 
-#cards {
+/* LAYOUT */
+.catalogo {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    width: 100%;
-    max-width: 1200px;
+    grid-template-columns: 280px 1fr;
+    gap: 5rem;
+    align-items: start;
 }
 
-.card {
-    height: auto;
-    background: var(--branco);
-    color: #111;
-    border-radius: 12px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease;
+.catalogo aside {
+    position: sticky;
+    top: 100px;
 }
 
-.card:hover {
-    transform: translateY(-10px);
-}
-
-.card img {
-    width: 100%;
-    aspect-ratio: 4/3;
-    object-fit: cover;
-}
-
-.card-info {
-    padding: 1.5rem;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.card-info h3 {
-    margin: 0 0 0.5rem;
-    font-family: var(--fonte-titulo);
-    font-size: 1.5rem;
+/* FILTROS */
+.pacotes-page .filtros {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: none;
+    padding: 0;
+    background: none;
+    border-radius: 0;
     color: var(--azul-escuro);
 }
 
-.card-info p {
-    margin: 0.2rem 0;
-    font-size: 1rem;
+.pacotes-page .filtros label {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
-.card-info .data {
-    margin: 1rem 0;
+.pacotes-page .filtros label.check {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 400;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.pacotes-page .filtros input:not([type=checkbox]),
+.pacotes-page .filtros select {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid #d6d6d6;
+    border-radius: 8px;
+    background: var(--branco);
+    font-weight: 400;
+}
+
+.pacotes-page .filtros input:focus,
+.pacotes-page .filtros select:focus {
+    outline: 2px solid var(--azul);
+    outline-offset: 1px;
+}
+
+.pacotes-page .filtros .btn {
+    width: 100%;
+    min-height: 0;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    background: var(--branco);
+    color: var(--azul-escuro);
+    border: 1px solid var(--azul-escuro);
+}
+
+/* RESULTADOS */
+.pacotes-page .contagem {
+    color: var(--azul);
+    font-size: 0.9rem;
     font-weight: 600;
+    margin: 0 0 2rem;
+}
+
+.pacotes-page .sem-resultados {
     color: #555;
 }
 
-.card .btn {
-    font-size: 1.1rem;
-    height: auto;
+.pacotes-page #cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem 3rem;
     margin: 0;
-    padding: 0.8rem;
-    width: 100%;
-    text-align: center;
 }
 
+.pacotes-page .card {
+    border-radius: 0;
+    overflow: visible;
+}
+
+.pacotes-page .card:hover {
+    transform: none;
+}
+
+.pacotes-page .card img {
+    aspect-ratio: 3 / 2;
+    border-radius: 12px;
+    transition: opacity 0.2s ease;
+}
+
+.pacotes-page .card:hover img {
+    opacity: 0.88;
+}
+
+.pacotes-page .card-info {
+    padding: 1.5rem 0 0;
+    text-align: left;
+}
+
+.pacotes-page .card-info h3 {
+    font-size: 1.35rem;
+    margin: 0 0 0.75rem;
+}
+
+.pacotes-page .card-info p {
+    margin: 0.35rem 0;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.pacotes-page .card-info .data {
+    margin: 0.35rem 0;
+    font-weight: 600;
+    color: var(--azul);
+}
+
+.pacotes-page .card-info .servicos {
+    margin: 0.75rem 0;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.pacotes-page .card-info .preco {
+    margin: 1.25rem 0;
+    font-size: 1.3rem;
+    color: var(--azul-escuro);
+}
+
+.card .btn {
+    width: 100%;
+    min-height: 0;
+    margin: auto 0 0;
+    padding: 0.7rem;
+    font-size: 1rem;
+    background: var(--azul);
+    color: var(--branco);
+}
+
+/* TELAS MENORES */
 @media (max-width: 992px) {
-    #cards {
+    .pacotes-page {
+        padding: 1.5rem 2rem 5rem;
+    }
+    .catalogo {
+        grid-template-columns: 1fr;
+        gap: 3.5rem;
+    }
+    .catalogo aside {
+        position: static;
+    }
+    .pacotes-page .filtros {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 600px) {
-    #cards {
-        grid-template-columns: 1fr;
+    .pacotes-page {
+        padding: 1.25rem 1.25rem 4rem;
+    }
+    .header-section {
+        padding: 2.5rem 1.5rem;
+        margin-bottom: 3rem;
     }
     .header-section h1 {
-        font-size: 2.5rem;
+        font-size: 2.25rem;
+    }
+    .pacotes-page .filtros,
+    .pacotes-page #cards {
+        grid-template-columns: 1fr;
     }
 }

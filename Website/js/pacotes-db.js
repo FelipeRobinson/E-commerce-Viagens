@@ -32,7 +32,7 @@ const PACOTES = [
         dataVolta: "2026-12-13",
         servicos: ["All inclusive", "Serviço de quarto", "Piscina", "Shows"],
         pessoas: 2,
-        valor: 2499, // TODO: confirmar valor
+        valor: 2499,
         imagem: "img/travel/Ocenun(1).png",
         descricao: "Viagem de cruzeiro para Santos, saindo do porto de Santos.",
         destaque: true,
@@ -47,7 +47,7 @@ const PACOTES = [
         dataVolta: "2027-02-12",
         servicos: ["All inclusive", "Serviço de quarto", "Spa", "Cassino"],
         pessoas: 2,
-        valor: 2599, // TODO: confirmar valor
+        valor: 2599,
         imagem: "img/travel/Ocenun(2).png",
         descricao: "Viagem de cruzeiro para Santos, saindo do porto de Santos.",
         destaque: true,

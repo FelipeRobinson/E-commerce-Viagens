@@ -1,8 +1,3 @@
-/* =====================================================================
-   MOTOR DO CATÁLOGO - lê a biblioteca PACOTES (pacotes-db.js) e monta
-   cards, busca, menu "Imperdíveis" e carrinho em qualquer página.
-   Deve ser carregado DEPOIS de pacotes-db.js.
-   ===================================================================== */
 const Catalogo = (() => {
     // Caminho até a pasta Website/, descoberto a partir deste próprio arquivo
     const BASE = document.currentScript.src.replace(/js\/catalogo\.js.*$/, '');
@@ -135,6 +130,10 @@ const Catalogo = (() => {
     function montarMenu() {
         const menu = document.querySelector('nav .menu');
         if (!menu || menu.querySelector('.imperdiveis')) return;
+        const css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = BASE + 'imperdiveis.css';
+        document.head.appendChild(css);
         const li = document.createElement('li');
         li.className = 'imperdiveis';
         const url = BASE + 'others/pacotes/index.html';
@@ -161,6 +160,9 @@ const Catalogo = (() => {
         montarMenu();
         ligarPesquisa();
         atualizarContador();
+        const chat = document.createElement('script');
+        chat.src = BASE + 'js/chat.js';
+        document.body.appendChild(chat);
     });
 
     return { BASE, moeda, data, periodo, noites, img, todos, porId, destaques, destinos, servicos,

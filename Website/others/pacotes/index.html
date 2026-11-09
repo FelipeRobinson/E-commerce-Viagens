@@ -45,18 +45,24 @@
             <p>Experiências exclusivas e imperdíveis para quem busca o melhor do luxo e aventura.</p>
         </section>
 
-        <form id="filtros" class="filtros">
-            <input type="search" name="q" placeholder="Navio, destino, serviço...">
-            <select name="destino"><option value="">Todos os destinos</option></select>
-            <select name="servico"><option value="">Qualquer serviço</option></select>
-            <label>Ida a partir de <input type="date" name="inicio"></label>
-            <label>Pessoas <input type="number" name="pessoas" min="1" placeholder="1"></label>
-            <label>Até R$ <input type="number" name="max" min="0" step="100" placeholder="sem limite"></label>
-            <label class="check"><input type="checkbox" name="destaque" value="1"> Só imperdíveis</label>
-            <button type="reset" class="btn branco">Limpar</button>
-        </form>
-        <p id="contagem" class="contagem"></p>
-        <div id="cards"></div>
+        <div class="catalogo">
+            <aside>
+                <form id="filtros" class="filtros">
+                    <label>Buscar <input type="search" name="q" placeholder="Navio, destino, serviço..."></label>
+                    <label>Destino <select name="destino"><option value="">Todos os destinos</option></select></label>
+                    <label>Serviço <select name="servico"><option value="">Qualquer serviço</option></select></label>
+                    <label>Ida a partir de <input type="date" name="inicio"></label>
+                    <label>Pessoas <input type="number" name="pessoas" min="1" placeholder="1"></label>
+                    <label>Até R$ <input type="number" name="max" min="0" step="100" placeholder="sem limite"></label>
+                    <label class="check"><input type="checkbox" name="destaque" value="1"> Só imperdíveis</label>
+                    <button type="reset" class="btn branco">Limpar filtros</button>
+                </form>
+            </aside>
+            <section class="resultados">
+                <p id="contagem" class="contagem"></p>
+                <div id="cards"></div>
+            </section>
+        </div>
     </main>
 
     <footer>

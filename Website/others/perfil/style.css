@@ -17,98 +17,22 @@
 
 body {
     font-family: var(--font-main);
-    background-color: var(--secondary-blue);
+    background-color: var(--white);
     min-height: 100vh;
     overflow-x: hidden;
 }
 
-/* Primary Navigation */
-.primary-nav {
-    height: 63px;
-    background-color: var(--primary-blue);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 3%;
-    color: var(--white);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+/* Faz o rodapé ficar no fim da página */
+body > main {
+    flex: 1;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--white);
-    font-family: var(--font-condensed);
-    font-weight: bold;
-    font-size: 24px;
+/* Mantém o rodapé com a mesma altura das outras páginas (o reset * acima zera a margem) */
+footer p {
+    margin: 1em 0;
 }
 
-.logo img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-}
-
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-}
-
-.nav-links a {
-    color: var(--white);
-    text-decoration: none;
-    font-family: var(--font-condensed);
-    text-transform: uppercase;
-    font-weight: 600;
-    font-size: 16px;
-}
-
-.nav-links a:hover {
-    color: var(--accent-orange);
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.search-field {
-    display: flex;
-    align-items: center;
-    background: var(--white);
-    border-radius: 20px;
-    padding: 0 10px;
-    height: 36px;
-}
-
-.search-field input {
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 14px;
-    width: 150px;
-}
-
-.search-field button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--black);
-}
-
-.action-icon {
-    color: var(--white);
-    font-size: 24px;
-    text-decoration: none;
-}
-
-/* Secondary Navigation */
+/* Secondary Navigation (o menu principal vem do style.css global) */
 .secondary-nav {
     height: 47px;
     background-color: var(--secondary-blue);
@@ -116,8 +40,15 @@ body {
     justify-content: center;
     align-items: center;
     position: sticky;
-    top: 63px;
-    z-index: 90;
+    top: 69px; /* altura do menu principal */
+    z-index: 9; /* abaixo do submenu "Imperdíveis" */
+}
+
+/* No celular o menu principal quebra em mais linhas e muda de altura */
+@media (max-width: 900px) {
+    .secondary-nav {
+        position: static;
+    }
 }
 
 .secondary-links {
@@ -202,27 +133,6 @@ body {
     font-weight: bold;
     font-size: 20px;
     color: var(--black);
-}
-
-/* Floating Chat */
-.floating-chat {
-    position: fixed;
-    bottom: 9px;
-    right: 10px;
-    width: 73px;
-    height: 73px;
-    background-color: var(--primary-blue);
-    color: var(--white);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: var(--font-condensed);
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    z-index: 1000;
 }
 
 /* Responsiveness */
