@@ -1,15 +1,17 @@
 // Assistente automático do site. Carregado em todas as páginas por catalogo.js.
 // Não usa servidor: as respostas vêm de regras simples e dos dados de pacotes-db.js.
+// No modo "equipe", a dúvida vai para a aba Mensagens do painel administrativo.
 (() => {
     const BASE = Catalogo.BASE;
     const CHAVE = 'oceanun-chat';
+    const CHAVE_MODO = 'oceanun-chat-modo';
     const MAX_MENSAGENS = 40;
     const LINK = {
         pacotes: BASE + 'others/pacotes/index.html',
         carrinho: BASE + 'others/carrinho/index.html',
         orcamento: BASE + 'others/orcamento/index.html',
         ajuda: BASE + 'others/perfil/ajuda/index.html',
-        whatsapp: 'https://wa.me/5519978194930'
+        whatsapp: Catalogo.CONTATO.whatsapp
     };
     const OPCOES = ['Pacotes imperdíveis', 'Mais baratos', 'Quais destinos?', 'Falar com atendente'];
 
@@ -48,9 +50,9 @@
         const t = normalizar(mensagem);
         const tem = re => re.test(t);
 
-        if (tem(/atendente|humano|whatsapp|falar com|telefone|contato/)) return {
-            texto: 'Nossa equipe atende pelo WhatsApp:',
-            links: [{ rotulo: 'Abrir WhatsApp', url: LINK.whatsapp }]
+        if (tem(/atendente|humano|whatsapp|falar com|telefone|contato|equipe|duvida/)) return {
+            texto: 'Você pode mandar sua dúvida para a nossa equipe aqui mesmo no site ou falar pelo WhatsApp:',
+            links: [{ rotulo: 'Enviar dúvida pelo site', acao: 'equipe' }, { rotulo: 'Abrir WhatsApp', url: LINK.whatsapp }]
         };
         if (tem(/carrinho/)) {
             const n = Catalogo.lerCarrinho().length;
@@ -127,7 +129,29 @@
         botao.innerHTML = '<i class="fa-solid fa-comments"></i>';
         document.body.appendChild(botao);
     }
+    const selo = criar('span', 'chat-selo');
+    selo.hidden = true;
+    botao.append(selo);
+
+    // Para o administrador, o botão leva às mensagens dos clientes
+    if (Catalogo.ehAdmin()) {
+        botao.setAttribute('aria-label', 'Mensagens dos clientes');
+        botao.addEventListener('click', () => { location.href = Catalogo.PAGINA_ADMIN + '#mensagens'; });
+        const atualizarSeloAdmin = () => {
+            const n = Catalogo.listarConversas().filter(c => Catalogo.naoLidas(c, 'admin')).length;
+            selo.textContent = n;
+            selo.hidden = !n;
+        };
+        window.addEventListener('storage', atualizarSeloAdmin);
+        window.addEventListener('hashchange', atualizarSeloAdmin);
+        botao.addEventListener('oceanun-mensagens', atualizarSeloAdmin);
+        atualizarSeloAdmin();
+        return;
+    }
     botao.setAttribute('aria-expanded', 'false');
+
+    let modo = 'bot';
+    try { modo = sessionStorage.getItem(CHAVE_MODO) || 'bot'; } catch {}
 
     const painel = criar('section', 'chat-painel');
     painel.hidden = true;
@@ -137,8 +161,9 @@
         <header class="chat-topo">
             <div>
                 <strong>Oceanun</strong>
-                <small>Assistente automático</small>
+                <small class="chat-subtitulo"></small>
             </div>
+            <button type="button" class="chat-modo"><i class="fa-solid"></i></button>
             <button type="button" class="chat-limpar" aria-label="Nova conversa" title="Nova conversa"><i class="fa-solid fa-rotate-right"></i></button>
             <button type="button" class="chat-fechar" aria-label="Fechar conversa" title="Fechar"><i class="fa-solid fa-xmark"></i></button>
         </header>
@@ -186,6 +211,13 @@
         if (m.links && m.links.length) {
             const links = criar('div', 'chat-links');
             m.links.forEach(l => {
+                if (l.acao === 'equipe') {
+                    const b = criar('button', '', l.rotulo);
+                    b.type = 'button';
+                    b.addEventListener('click', () => mudarModo('equipe'));
+                    links.append(b);
+                    return;
+                }
                 const a = criar('a', '', l.rotulo);
                 a.href = l.url;
                 if (l.url === LINK.whatsapp) { a.target = '_blank'; a.rel = 'noopener'; }
@@ -237,7 +269,45 @@
         }, 500);
     }
 
+    // ---------- Conversa com a equipe ----------
+    const botaoModo = painel.querySelector('.chat-modo');
+    const botaoLimpar = painel.querySelector('.chat-limpar');
+
+    function atualizarSelo() {
+        const n = Catalogo.naoLidas(Catalogo.minhaConversa(), 'cliente');
+        const visivel = n > 0 && !(estaAberto() && modo === 'equipe');
+        selo.textContent = n;
+        selo.hidden = !visivel;
+    }
+
+    function desenharEquipe() {
+        const conversa = Catalogo.minhaConversa();
+        areaMensagens.innerHTML = '';
+        desenharMensagem({ de: 'bot', texto: 'Escreva sua dúvida e a equipe Oceanun responde por aqui. Fique à vontade para voltar depois para ver a resposta.' });
+        (conversa ? conversa.mensagens : []).forEach(m => desenharMensagem({ de: m.de === 'cliente' ? 'usuario' : 'bot', texto: m.texto }));
+        if (conversa && estaAberto() && Catalogo.naoLidas(conversa, 'cliente')) Catalogo.marcarLida(conversa.id, 'cliente');
+        atualizarSelo();
+        rolar();
+    }
+
+    function mudarModo(novo) {
+        modo = novo;
+        try { sessionStorage.setItem(CHAVE_MODO, modo); } catch {}
+        iniciar();
+        campo.focus();
+    }
+
     function iniciar() {
+        const equipe = modo === 'equipe';
+        painel.querySelector('.chat-subtitulo').textContent = equipe ? 'Dúvidas com a equipe' : 'Assistente automático';
+        painel.setAttribute('aria-label', equipe ? 'Conversa com a equipe Oceanun' : 'Conversa com o assistente Oceanun');
+        botaoModo.setAttribute('aria-label', equipe ? 'Voltar ao assistente automático' : 'Enviar dúvida para a equipe');
+        botaoModo.title = botaoModo.getAttribute('aria-label');
+        botaoModo.querySelector('i').className = 'fa-solid ' + (equipe ? 'fa-robot' : 'fa-headset');
+        botaoLimpar.hidden = equipe;
+        campo.placeholder = equipe ? 'Escreva sua dúvida para a equipe' : 'Escreva sua mensagem';
+        campo.maxLength = equipe ? 500 : 200;
+        if (equipe) { desenharEquipe(); return; }
         areaMensagens.innerHTML = '';
         historico.forEach(desenharMensagem);
         if (!historico.length) {
@@ -260,11 +330,15 @@
             painel.hidden = false;
             void painel.offsetWidth; // aplica o estado inicial para a transição de abertura rodar
             painel.classList.add('aberto');
+            // Se a equipe respondeu, abre direto na conversa com ela
+            if (Catalogo.naoLidas(Catalogo.minhaConversa(), 'cliente') && modo !== 'equipe') mudarModo('equipe');
+            else if (modo === 'equipe') desenharEquipe();
         } else {
             painel.classList.remove('aberto');
             timerFechar = setTimeout(() => { painel.hidden = true; }, 180); // mesma duração do fechamento no chat.css
         }
         botao.setAttribute('aria-expanded', String(abrir));
+        atualizarSelo();
         const icone = botao.querySelector('i');
         icone.classList.toggle('fa-comments', !abrir);
         icone.classList.toggle('fa-xmark', abrir);
@@ -283,13 +357,24 @@
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape' && estaAberto()) alternar(false);
     });
+    botaoModo.addEventListener('click', () => mudarModo(modo === 'equipe' ? 'bot' : 'equipe'));
     form.addEventListener('submit', e => {
         e.preventDefault();
         const texto = campo.value.trim();
         if (!texto || pensando) return;
         campo.value = '';
-        enviar(texto);
+        if (modo !== 'equipe') { enviar(texto); return; }
+        if (Catalogo.enviarDuvida(texto)) desenharEquipe();
+        else desenharMensagem({ de: 'bot', texto: 'Não foi possível enviar sua dúvida neste navegador. Tente pelo WhatsApp.' });
+    });
+
+    // Respostas da equipe chegam mesmo com o site aberto em outra aba
+    window.addEventListener('storage', e => {
+        if (e.key !== Catalogo.CHAVE_MENSAGENS) return;
+        if (modo === 'equipe' && estaAberto()) desenharEquipe();
+        else atualizarSelo();
     });
 
     iniciar();
+    atualizarSelo();
 })();

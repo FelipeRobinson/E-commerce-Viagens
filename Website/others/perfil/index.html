@@ -51,37 +51,119 @@
             <i class="fa-solid fa-user"></i>
         </div>
 
-        <section id="perfil-dados" hidden>
-            <div class="profile-info">
-                <div class="info-column col-1">
-                    <div class="data-group">
-                        <span class="label">Nome do Usuário:</span>
-                        <span class="value" id="ver-nome"></span>
+        <section id="perfil-dados" class="perfil-painel" hidden>
+            <header class="perfil-hero">
+                <div class="hero-foto">
+                    <div class="hero-avatar">
+                        <img id="avatar-img" alt="Sua foto de perfil" hidden>
+                        <i class="fa-solid fa-user" id="avatar-icone" aria-hidden="true"></i>
                     </div>
-                    <div class="data-group">
-                        <span class="label">CPF:</span>
-                        <span class="value" id="ver-cpf"></span>
-                    </div>
-                    <div class="data-group">
-                        <span class="label">Data de nascimento:</span>
-                        <span class="value" id="ver-nascimento"></span>
-                    </div>
+                    <button type="button" class="avatar-trocar" id="foto-escolher" aria-label="Trocar foto de perfil" title="Trocar foto">
+                        <i class="fa-solid fa-camera"></i>
+                    </button>
+                    <input type="file" id="foto-arquivo" accept="image/png,image/jpeg,image/webp" hidden>
                 </div>
-                <div class="info-column col-2">
-                    <div class="data-group">
-                        <span class="label">E-mail:</span>
-                        <span class="value" id="ver-email"></span>
+                <div class="hero-texto">
+                    <p class="hero-saudacao">Olá,</p>
+                    <h1 id="hero-nome"></h1>
+                    <p><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span id="hero-email"></span></p>
+                    <p class="hero-desde" id="hero-desde"></p>
+                    <div class="foto-acoes">
+                        <button type="button" class="hero-link" id="foto-pasta" hidden><i class="fa-solid fa-folder-open"></i> Gravar foto em img/perfil</button>
+                        <button type="button" class="hero-link" id="foto-remover" hidden><i class="fa-solid fa-trash"></i> Remover foto</button>
                     </div>
-                    <div class="data-group">
-                        <span class="label">Número:</span>
-                        <span class="value" id="ver-telefone"></span>
-                    </div>
+                    <p class="foto-status" id="foto-status" role="status"></p>
                 </div>
-            </div>
-            <div class="perfil-botoes">
-                <button type="button" class="perfil-btn" id="perfil-editar">Editar perfil</button>
-                <button type="button" class="perfil-btn secundario" id="perfil-sair">Sair</button>
-                <button type="button" class="perfil-btn perigo" id="perfil-excluir">Excluir perfil</button>
+                <div class="hero-acoes">
+                    <button type="button" class="perfil-btn amarelo" id="perfil-editar"><i class="fa-solid fa-pen"></i> Editar dados</button>
+                    <button type="button" class="perfil-btn claro" id="perfil-sair"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+                </div>
+            </header>
+
+            <div class="perfil-grade">
+                <section class="perfil-cartao cab-azul">
+                    <header><i class="fa-solid fa-id-card" aria-hidden="true"></i><h2>Dados pessoais</h2></header>
+                    <dl class="cartao-corpo dados-lista">
+                        <div><dt>Nome</dt><dd id="ver-nome"></dd></div>
+                        <div><dt>CPF</dt><dd id="ver-cpf"></dd></div>
+                        <div><dt>Nascimento</dt><dd id="ver-nascimento"></dd></div>
+                        <div><dt>E-mail</dt><dd id="ver-email"></dd></div>
+                        <div><dt>Telefone</dt><dd id="ver-telefone"></dd></div>
+                    </dl>
+                </section>
+
+                <section class="perfil-cartao cab-amarelo">
+                    <header><i class="fa-solid fa-chart-simple" aria-hidden="true"></i><h2>Resumo da conta</h2></header>
+                    <div class="cartao-corpo">
+                        <p class="completo-rotulo">Perfil <strong id="completo-pct"></strong> completo</p>
+                        <div class="completo-trilho" aria-hidden="true"><div class="completo-barra" id="completo-barra"></div></div>
+                        <p class="completo-dica" id="completo-dica"></p>
+                        <ul class="resumo-lista">
+                            <li><i class="fa-solid fa-calendar-check" aria-hidden="true"></i><span>Cliente desde</span><strong id="resumo-desde"></strong></li>
+                            <li><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i><span>Itens no carrinho</span><strong id="resumo-carrinho"></strong></li>
+                            <li><i class="fa-solid fa-comments" aria-hidden="true"></i><span>Mensagens com a equipe</span><strong id="resumo-mensagens"></strong></li>
+                        </ul>
+                        <div class="resumo-botoes">
+                            <a class="perfil-btn secundario" href="../carrinho/index.html">Ver carrinho</a>
+                            <button type="button" class="perfil-btn secundario" id="abrir-chat">Falar com a equipe</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="perfil-cartao cab-escuro">
+                    <header><i class="fa-solid fa-location-dot" aria-hidden="true"></i><h2>Endereço</h2></header>
+                    <form class="cartao-corpo campos-grade" id="form-endereco" novalidate>
+                        <label class="perfil-campo">CEP<input name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9"><span class="erro" data-erro="cep"></span></label>
+                        <label class="perfil-campo">Estado<select name="uf" autocomplete="address-level1"><option value="">Selecione</option></select><span class="erro" data-erro="uf"></span></label>
+                        <label class="perfil-campo largo">Rua<input name="rua" autocomplete="address-line1" maxlength="120"></label>
+                        <label class="perfil-campo">Número<input name="numero" maxlength="10"></label>
+                        <label class="perfil-campo">Complemento<input name="complemento" autocomplete="address-line2" maxlength="60"></label>
+                        <label class="perfil-campo largo">Cidade<input name="cidade" autocomplete="address-level2" maxlength="80"></label>
+                        <div class="largo cartao-rodape">
+                            <button type="submit" class="perfil-btn">Salvar endereço</button>
+                            <span class="salvo" role="status"></span>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="perfil-cartao cab-azul">
+                    <header><i class="fa-solid fa-bell" aria-hidden="true"></i><h2>Preferências de contato</h2></header>
+                    <form class="cartao-corpo" id="form-preferencias" novalidate>
+                        <label class="alternar"><input type="checkbox" name="email"><span class="alternar-trilho" aria-hidden="true"></span>
+                            <span><strong>Ofertas por e-mail</strong><small>Promoções e novos cruzeiros.</small></span></label>
+                        <label class="alternar"><input type="checkbox" name="whatsapp"><span class="alternar-trilho" aria-hidden="true"></span>
+                            <span><strong>Avisos pelo WhatsApp</strong><small>Lembretes de embarque e pagamento.</small></span></label>
+                        <label class="perfil-campo">Destino de interesse<select name="destino"><option value="">Nenhum</option></select></label>
+                        <div class="cartao-rodape">
+                            <button type="submit" class="perfil-btn">Salvar preferências</button>
+                            <span class="salvo" role="status"></span>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="perfil-cartao cab-degrade">
+                    <header><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><h2>Alterar senha</h2></header>
+                    <form class="cartao-corpo" id="form-senha" novalidate>
+                        <label class="perfil-campo">Senha atual<input type="password" name="atual" autocomplete="current-password"><span class="erro" data-erro="atual"></span></label>
+                        <label class="perfil-campo">Nova senha<input type="password" name="nova" autocomplete="new-password"><span class="erro" data-erro="nova"></span></label>
+                        <label class="perfil-campo">Confirmar nova senha<input type="password" name="confirmar" autocomplete="new-password"><span class="erro" data-erro="confirmar"></span></label>
+                        <span class="erro" data-erro="geral"></span>
+                        <div class="cartao-rodape">
+                            <button type="submit" class="perfil-btn">Alterar senha</button>
+                            <span class="salvo" role="status"></span>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="perfil-cartao cab-perigo">
+                    <header><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i><h2>Excluir conta</h2></header>
+                    <div class="cartao-corpo">
+                        <p>Apaga seus dados, endereço, preferências e foto deste navegador. Não é possível desfazer.</p>
+                        <div class="cartao-rodape">
+                            <button type="button" class="perfil-btn perigo" id="perfil-excluir">Excluir minha conta</button>
+                        </div>
+                    </div>
+                </section>
             </div>
         </section>
 

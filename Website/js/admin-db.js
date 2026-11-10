@@ -98,7 +98,29 @@ const AdminDB = (() => {
         return d;
     }
 
+    // Duas dúvidas de exemplo para a aba Mensagens (só entram uma vez)
+    function semearMensagens(d) {
+        if (d.mensagensSemeadas) return;
+        const ontem = somaDias(hoje, -1) + 'T14:20:00';
+        const conversa = (i, mensagens) => {
+            const c = d.clientes.find(x => x.id === 'c' + i);
+            return c && { id: 'exemplo:' + c.id, nome: c.nome, email: c.email, origem: 'exemplo',
+                          mensagens, lidaAdmin: mensagens[mensagens.length - 1].de === 'admin' ? mensagens[mensagens.length - 1].em : '', lidaCliente: '' };
+        };
+        Catalogo.adicionarConversas([
+            conversa(6, [
+                { de: 'cliente', texto: 'Olá! O pacote do MSC Divina inclui as bebidas?', em: ontem },
+                { de: 'admin', texto: 'Oi, Juliana! Inclui sim: o pacote é all inclusive e tem serviço de quarto, spa e cassino.', em: ontem.replace('14:20', '15:05') }
+            ]),
+            conversa(13, [
+                { de: 'cliente', texto: 'Posso levar mais uma pessoa no Costa Diadema? Vi que o pacote é para 2.', em: hoje + 'T09:10:00' }
+            ])
+        ].filter(Boolean));
+        d.mensagensSemeadas = true;
+    }
+
     const dados = carregar();
+    semearMensagens(dados);
     function salvar() {
         try { localStorage.setItem(CHAVE, JSON.stringify(dados)); return true; } catch { return false; }
     }

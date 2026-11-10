@@ -37,7 +37,15 @@
         </div>
     </nav>
     <section id="inicio">
-        <h1>Sua próxima aventura <span>começa aqui</span></h1>
+        <div class="hero-cabeca">
+            <h1>Sua próxima aventura <span>começa aqui</span></h1>
+            <p class="hero-sub">Cruzeiros e pacotes saindo de Santos, com preços claros e atendimento de perto.</p>
+            <ul class="hero-selos">
+                <li><i class="fa-solid fa-anchor" aria-hidden="true"></i> Saídas de Santos</li>
+                <li><i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i> Opções all inclusive</li>
+                <li><i class="fa-solid fa-headset" aria-hidden="true"></i> Atendimento humano</li>
+            </ul>
+        </div>
         <form class="reserva" id="form-reserva">
             <div class="tipos">
                 <button type="button" class="opcao ativo">Ida e volta</button>
@@ -60,7 +68,7 @@
                     <small>Viajantes</small>
                     <input type="number" min="1" value="1" id="viajantes">
                 </label>
-                <button type="submit" class="buscar">Buscar</button>
+                <button type="submit" class="buscar"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Buscar</button>
             </div>
         </form>
         <div class="cta">
@@ -70,12 +78,57 @@
     </section>
     <section id="pacotes">
         <div class="pacotes-info">
-            <img src="./img/navio.png" alt="Navio">
+            <img src="./img/navio.png" alt="">
+            <p class="pacotes-selo"><i class="fa-solid fa-fire" aria-hidden="true"></i> Destaques da temporada</p>
             <h1>Pacotes imperdíveis</h1>
             <p class="subtitulo">Saindo de Santos</p>
             <a href="others/pacotes/index.html" class="btn amarelo">Mais Pacotes</a>
         </div>
         <div id="cards"><!-- preenchido por js/catalogo.js a partir de js/pacotes-db.js --></div>
+    </section>
+    <section id="vantagens" aria-labelledby="vantagens-titulo">
+        <p class="selo-secao">Por que a Oceanun</p>
+        <h2 id="vantagens-titulo">Viajar com a gente é <span>simples</span></h2>
+        <div class="vantagens-grade">
+            <article class="vantagem v-azul">
+                <span class="vantagem-icone"><i class="fa-solid fa-ship" aria-hidden="true"></i></span>
+                <h3>Cruzeiros selecionados</h3>
+                <p>Roteiros saindo do porto de Santos, com datas e preços claros.</p>
+            </article>
+            <article class="vantagem v-amarelo">
+                <span class="vantagem-icone"><i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i></span>
+                <h3>Tudo em um pacote</h3>
+                <p>Opções all inclusive, com serviço de quarto, piscina, shows e mais.</p>
+            </article>
+            <article class="vantagem v-escuro">
+                <span class="vantagem-icone"><i class="fa-solid fa-file-pen" aria-hidden="true"></i></span>
+                <h3>Orçamento sob medida</h3>
+                <p>Conte o que você procura e montamos uma proposta para você.</p>
+            </article>
+            <article class="vantagem v-azul">
+                <span class="vantagem-icone"><i class="fa-solid fa-headset" aria-hidden="true"></i></span>
+                <h3>Atendimento humano</h3>
+                <p>Fale com a nossa equipe pelo chat do site ou pelo WhatsApp.</p>
+            </article>
+        </div>
+    </section>
+    <section class="whats-cartao" aria-labelledby="whats-titulo">
+        <div class="whats-texto">
+            <p class="whats-selo">Sua próxima viagem começa aqui</p>
+            <h2 id="whats-titulo">Pronto para embarcar?</h2>
+            <p>Fale com a Oceanun e receba ajuda para escolher o cruzeiro e o pacote ideais para você.</p>
+        </div>
+        <div class="whats-acoes">
+            <a class="whats-botao" target="_blank" rel="noopener"
+               href="https://wa.me/5519978194930?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20Oceanun%20e%20quero%20planejar%20minha%20viagem.">
+                <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Falar no WhatsApp
+            </a>
+            <ul class="whats-itens">
+                <li><i class="fa-solid fa-headset" aria-hidden="true"></i> Atendimento humano</li>
+                <li><i class="fa-solid fa-file-pen" aria-hidden="true"></i> Orçamento sob medida</li>
+                <li><i class="fa-solid fa-ship" aria-hidden="true"></i> Ajuda para escolher o cruzeiro</li>
+            </ul>
+        </div>
     </section>
     <button id="chat" aria-label="ChatBot"><i class="fa-solid fa-comments"></i></button>
     <footer>

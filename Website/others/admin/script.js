@@ -99,23 +99,42 @@ function formularioVenda(venda) {
     });
 }
 
+const ICONES_ETAPA = { negociacao: 'fa-comments-dollar', pagamento: 'fa-credit-card', concluido: 'fa-circle-check' };
+const iniciais = nome => {
+    const partes = nome.split(' ').filter(Boolean);
+    return (partes[0][0] + (partes.length > 1 ? partes[partes.length - 1][0] : '')).toUpperCase();
+};
+
 function desenharVendas() {
     const vendas = db.vendas.filter(v => v.etapa !== 'concluido' || AdminDB.eDoMesAtual(v))
         .filter(v => combina(nomeCliente(v.clienteId), nomeNavio(v.pacoteId)));
-    painel.innerHTML = `<div class="kanban">${ORDEM_ETAPAS.map((etapa, i) => `
-        <div class="kanban-coluna">
-            <h2>${ETAPAS[etapa]}${etapa === 'concluido' ? ' <small>neste mês</small>' : ''}
-                ${i < 2 ? '<i class="fa-solid fa-chevron-right" aria-hidden="true"></i>' : ''}</h2>
-            ${vendas.filter(v => v.etapa === etapa).map(v => `
+    painel.innerHTML = `<div class="kanban">${ORDEM_ETAPAS.map((etapa, i) => {
+        const lista = vendas.filter(v => v.etapa === etapa);
+        const total = lista.reduce((s, v) => s + v.valor, 0);
+        const proxima = ETAPAS[ORDEM_ETAPAS[i + 1]];
+        return `<section class="kanban-coluna etapa-${etapa}" aria-labelledby="titulo-${etapa}">
+            <header class="kanban-cabeca">
+                <span class="kanban-passo" aria-hidden="true">${i + 1}</span>
+                <div>
+                    <h2 id="titulo-${etapa}"><i class="fa-solid ${ICONES_ETAPA[etapa]}" aria-hidden="true"></i> ${ETAPAS[etapa]}</h2>
+                    <p>${lista.length} venda${lista.length === 1 ? '' : 's'} · ${moeda(total)}${etapa === 'concluido' ? ' neste mês' : ''}</p>
+                </div>
+            </header>
+            <div class="kanban-corpo">${lista.map(v => `
                 <article class="venda-card">
-                    <div>
+                    <span class="venda-avatar" aria-hidden="true">${esc(iniciais(nomeCliente(v.clienteId)))}</span>
+                    <div class="venda-info">
                         <button type="button" class="venda-nome" data-editar-venda="${v.id}">${esc(nomeCliente(v.clienteId))}</button>
-                        <p>${esc(nomeNavio(v.pacoteId))}</p>
-                        <p>Valor: ${moeda(v.valor)}</p>
+                        <p><i class="fa-solid fa-ship" aria-hidden="true"></i> ${esc(nomeNavio(v.pacoteId))}</p>
+                        <p class="venda-valor">${moeda(v.valor)}</p>
                     </div>
-                    ${i < 2 ? `<button type="button" class="avancar" data-avancar="${v.id}" aria-label="Mover para ${ETAPAS[ORDEM_ETAPAS[i + 1]]}"><i class="fa-solid fa-chevron-right"></i></button>` : ''}
-                </article>`).join('') || '<p class="vazio">Nenhuma venda.</p>'}
-        </div>`).join('')}</div>`;
+                    ${proxima
+                        ? `<button type="button" class="avancar" data-avancar="${v.id}" aria-label="Mover para ${proxima}" title="Mover para ${proxima}"><i class="fa-solid fa-arrow-right"></i></button>`
+                        : '<span class="venda-ok" title="Venda concluída"><i class="fa-solid fa-check"></i></span>'}
+                </article>`).join('') || '<p class="vazio">Nenhuma venda nesta etapa.</p>'}
+            </div>
+        </section>`;
+    }).join('')}</div>`;
 }
 
 // ---------- Clientes ----------
@@ -161,25 +180,53 @@ function formularioCliente(cliente) {
     });
 }
 
+let filtroStatus = 'todos';
+const RESUMO_CLIENTES = [
+    ['todos', 'Clientes', 'fa-users'],
+    ['negociacao', 'Em negociação', ICONES_ETAPA.negociacao],
+    ['pagamento', 'Em pagamento', ICONES_ETAPA.pagamento],
+    ['concluido', 'Concluídos', ICONES_ETAPA.concluido],
+    ['nenhuma', 'Sem venda', 'fa-user-clock']
+];
+
 function desenharClientes() {
     const colunas = [['nome', 'Nome do Cliente'], ['cpf', 'CPF'], ['local', 'Local'], ['status', 'Status']];
-    const linhas = db.clientes.map(c => {
+    const todas = db.clientes.map(c => {
         const v = ultimaVenda(c.id);
         const pacote = v && Catalogo.porId(v.pacoteId);
-        return { c, nome: c.nome, cpf: c.cpf,
+        return { c, nome: c.nome, cpf: c.cpf, pacote,
                  local: pacote ? `${pacote.destino} (${pacote.navio})` : 'Sem viagem',
+                 etapa: v ? v.etapa : 'nenhuma',
                  status: v ? ETAPAS[v.etapa] : 'Sem venda' };
-    }).filter(l => combina(l.nome, l.cpf, formatarCpf(l.cpf), l.local, l.status))
-      .sort((a, b) => a[ordenacao.campo].localeCompare(b[ordenacao.campo]) * ordenacao.direcao);
+    });
+    const contagem = chave => chave === 'todos' ? todas.length : todas.filter(l => l.etapa === chave).length;
+    const linhas = todas
+        .filter(l => filtroStatus === 'todos' || l.etapa === filtroStatus)
+        .filter(l => combina(l.nome, l.cpf, formatarCpf(l.cpf), l.local, l.status, l.c.email))
+        .sort((a, b) => a[ordenacao.campo].localeCompare(b[ordenacao.campo]) * ordenacao.direcao);
     const aria = campo => ordenacao.campo === campo ? (ordenacao.direcao > 0 ? 'ascending' : 'descending') : 'none';
     const seta = campo => ordenacao.campo !== campo ? 'fa-sort' : ordenacao.direcao > 0 ? 'fa-sort-up' : 'fa-sort-down';
-    painel.innerHTML = `<div class="tabela-rolagem"><table class="tabela-clientes">
+    painel.innerHTML = `
+        <div class="resumo-clientes">${RESUMO_CLIENTES.map(([chave, rotulo, icone]) => `
+            <button type="button" class="resumo-card etapa-${chave}" data-filtro="${chave}" aria-pressed="${filtroStatus === chave}">
+                <span class="resumo-icone"><i class="fa-solid ${icone}" aria-hidden="true"></i></span>
+                <span><strong>${contagem(chave)}</strong>${rotulo}</span>
+            </button>`).join('')}
+        </div>
+        <div class="tabela-rolagem"><table class="tabela-clientes">
         <thead><tr>${colunas.map(([campo, nome]) => `
             <th aria-sort="${aria(campo)}"><button type="button" data-ordenar="${campo}">${nome} <i class="fa-solid ${seta(campo)}"></i></button></th>`).join('')}
             <th><span class="sr">Ações</span></th></tr></thead>
-        <tbody>${linhas.map(l => `<tr>
-            <td>${esc(l.nome)}</td><td>${esc(formatarCpf(l.cpf))}</td><td>${esc(l.local)}</td><td>${esc(l.status)}</td>
-            <td><button type="button" class="alterar" data-editar-cliente="${l.c.id}">Alterar</button></td>
+        <tbody>${linhas.map(l => `<tr class="etapa-${l.etapa}">
+            <td><div class="cliente-nome">
+                <span class="venda-avatar" aria-hidden="true">${esc(iniciais(l.nome))}</span>
+                <span><strong>${esc(l.nome)}</strong>${l.c.origem === 'site' ? '<b class="tag-site">Cadastro no site</b>' : ''}
+                    <small>${esc(l.c.email)}</small></span>
+            </div></td>
+            <td class="cliente-cpf">${esc(formatarCpf(l.cpf))}</td>
+            <td>${l.pacote ? `<i class="fa-solid fa-ship icone-navio" aria-hidden="true"></i> ${esc(l.local)}` : `<span class="sem-viagem">${esc(l.local)}</span>`}</td>
+            <td><span class="status-pilula">${esc(l.status)}</span></td>
+            <td><button type="button" class="alterar" data-editar-cliente="${l.c.id}"><i class="fa-solid fa-pen" aria-hidden="true"></i> Alterar</button></td>
         </tr>`).join('') || '<tr><td colspan="5" class="vazio">Nenhum cliente encontrado.</td></tr>'}</tbody>
     </table></div>`;
 }
@@ -212,16 +259,24 @@ function formularioTarefa(tarefa) {
 
 function itemTarefa(t) {
     const atrasada = t.prazo < AdminDB.hoje;
-    return `<li>
-        <button type="button" class="concluir" data-concluir="${t.id}" aria-label="Concluir: ${esc(t.descricao)}"><i class="fa-regular fa-square"></i></button>
-        <button type="button" class="tarefa-texto" data-editar-tarefa="${t.id}">${esc(t.descricao)} - ${esc(nomeCliente(t.clienteId))}
-            <small>${Catalogo.data(t.prazo)}${atrasada ? ' (atrasada)' : ''}</small></button>
+    return `<li class="tarefa-item${atrasada ? ' atrasada' : ''}">
+        <button type="button" class="concluir" data-concluir="${t.id}" aria-label="Concluir: ${esc(t.descricao)}" title="Marcar como concluída"><i class="fa-solid fa-check"></i></button>
+        <button type="button" class="tarefa-texto" data-editar-tarefa="${t.id}">
+            <strong>${esc(t.descricao)}</strong>
+            <span class="tarefa-meta">
+                <span><i class="fa-solid fa-user" aria-hidden="true"></i> ${esc(nomeCliente(t.clienteId))}</span>
+                <span><i class="fa-regular fa-calendar" aria-hidden="true"></i> ${Catalogo.data(t.prazo)}</span>
+                ${atrasada ? '<span class="tag-atrasada"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Atrasada</span>' : ''}
+            </span>
+        </button>
     </li>`;
 }
 
-function blocoTarefas(titulo, lista, classe) {
-    return `<div class="tarefas-bloco ${classe}"><h2>${titulo}</h2>
-        <ul>${lista.map(itemTarefa).join('') || '<li class="vazio-claro">Nada pendente.</li>'}</ul></div>`;
+function blocoTarefas(titulo, lista, classe, icone) {
+    return `<section class="tarefas-bloco ${classe}">
+        <header><i class="fa-solid ${icone}" aria-hidden="true"></i><h2>${titulo}</h2><span class="bloco-contagem">${lista.length}</span></header>
+        <ul>${lista.map(itemTarefa).join('') || '<li class="tarefas-vazio"><i class="fa-solid fa-mug-hot" aria-hidden="true"></i> Nada pendente por aqui.</li>'}</ul>
+    </section>`;
 }
 
 function desenharTarefas() {
@@ -230,24 +285,46 @@ function desenharTarefas() {
     const mes = hoje.slice(0, 7);
     const lista = pendentes().filter(t => combina(t.descricao, nomeCliente(t.clienteId))).sort((a, b) => a.prazo.localeCompare(b.prazo));
     const comuns = lista.filter(t => !t.lembrete);
+    const grupos = {
+        hoje: comuns.filter(t => t.prazo <= hoje),
+        semana: comuns.filter(t => t.prazo > hoje && t.prazo <= domingo),
+        mes: comuns.filter(t => t.prazo > domingo && t.prazo.slice(0, 7) === mes),
+        lembretes: lista.filter(t => t.lembrete)
+    };
+    const resumo = [
+        ['Para hoje', grupos.hoje.length, 'fa-sun', 'etapa-negociacao'],
+        ['Atrasadas', lista.filter(t => t.prazo < hoje).length, 'fa-triangle-exclamation', 'etapa-atrasada'],
+        ['Esta semana', grupos.semana.length, 'fa-calendar-week', 'etapa-pagamento'],
+        ['Este mês', grupos.mes.length, 'fa-calendar', 'etapa-concluido'],
+        ['Lembretes', grupos.lembretes.length, 'fa-bell', 'etapa-todos']
+    ];
     painel.innerHTML = `
+        <div class="resumo-clientes">${resumo.map(([rotulo, n, icone, classe]) => `
+            <div class="resumo-card estatico ${classe}">
+                <span class="resumo-icone"><i class="fa-solid ${icone}" aria-hidden="true"></i></span>
+                <span><strong>${n}</strong>${rotulo}</span>
+            </div>`).join('')}
+        </div>
         <div class="tarefas-topo">
-            <div class="semana">${DIAS.map((dia, i) => {
-                const data = somaDias(segunda, i);
-                return `<div class="semana-dia${data === hoje ? ' hoje' : ''}">
-                    <h2>${dia} <small>${data.slice(8)}/${data.slice(5, 7)}</small></h2>
-                    ${lista.filter(t => t.prazo === data).map(t =>
-                        `<button type="button" class="semana-tarefa" data-editar-tarefa="${t.id}">${esc(t.descricao)}</button>`).join('')}
-                </div>`;
-            }).join('')}</div>
-            ${blocoTarefas('Para hoje:', comuns.filter(t => t.prazo <= hoje), 'hoje-bloco')}
+            <section class="semana-cartao" aria-label="Tarefas da semana">
+                <div class="semana">${DIAS.map((dia, i) => {
+                    const data = somaDias(segunda, i);
+                    const doDia = lista.filter(t => t.prazo === data);
+                    return `<div class="semana-dia${data === hoje ? ' hoje' : ''}">
+                        <h2><span class="dia-nome">${dia}</span><span class="dia-numero">${data.slice(8)}</span>
+                            ${data === hoje ? '<span class="dia-hoje">Hoje</span>' : ''}</h2>
+                        ${doDia.map(t => `<button type="button" class="semana-tarefa${t.lembrete ? ' lembrete' : ''}" data-editar-tarefa="${t.id}">
+                            <i class="fa-solid ${t.lembrete ? 'fa-bell' : 'fa-thumbtack'}" aria-hidden="true"></i> ${esc(t.descricao)}</button>`).join('')
+                            || '<p class="dia-livre">Livre</p>'}
+                    </div>`;
+                }).join('')}</div>
+            </section>
+            ${blocoTarefas('Para hoje', grupos.hoje, 'bloco-hoje', 'fa-sun')}
         </div>
         <div class="tarefas-base">
-            <div class="tarefas-pilha">
-                ${blocoTarefas('Desta semana:', comuns.filter(t => t.prazo > hoje && t.prazo <= domingo))}
-                ${blocoTarefas('Deste mês:', comuns.filter(t => t.prazo > domingo && t.prazo.slice(0, 7) === mes))}
-            </div>
-            ${blocoTarefas('Lembretes:', lista.filter(t => t.lembrete))}
+            ${blocoTarefas('Desta semana', grupos.semana, 'bloco-semana', 'fa-calendar-week')}
+            ${blocoTarefas('Deste mês', grupos.mes, 'bloco-mes', 'fa-calendar')}
+            ${blocoTarefas('Lembretes', grupos.lembretes, 'bloco-lembretes', 'fa-bell')}
         </div>`;
 }
 
@@ -276,6 +353,10 @@ function graficoLinha(serie) {
             <text class="eixo" x="${esq - 10}" y="${y(passo * n) + 4}" text-anchor="end">${(passo * n).toLocaleString('pt-BR')}</text>`).join('')}
         ${serie.map((s, i) => `<text class="eixo" x="${x(i)}" y="${A - 8}" text-anchor="middle">${esc(s.rotulo)}</text>`).join('')}
         <line id="cruz" class="cruz" y1="${topo}" y2="${A - base}" visibility="hidden"/>
+        <defs><linearGradient id="area-receita" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0153c2" stop-opacity=".28"/><stop offset="1" stop-color="#0153c2" stop-opacity="0"/>
+        </linearGradient></defs>
+        <polygon fill="url(#area-receita)" points="${x(0)},${y(0)} ${pontos} ${x(serie.length - 1)},${y(0)}"/>
         <polyline class="linha" points="${pontos}"/>
         ${serie.map((s, i) => `<circle class="ponto" cx="${x(i)}" cy="${y(s.valor)}" r="5"/>`).join('')}
         <text class="rotulo" x="${x(serie.length - 1)}" y="${y(ultimo.valor) - 12}" text-anchor="end">${moeda(ultimo.valor)}</text>
@@ -319,24 +400,44 @@ function desenharFaturamento() {
     const m = AdminDB.metricas();
     const variacao = m.variacao === null ? 'Sem base no mês anterior'
         : `<span class="${m.variacao >= 0 ? 'sobe' : 'desce'}"><i class="fa-solid fa-arrow-${m.variacao >= 0 ? 'up' : 'down'}"></i> ${m.variacao >= 0 ? '+' : ''}${m.variacao.toFixed(1).replace('.', ',')}%</span> vs mês anterior`;
-    painel.innerHTML = `<div class="fat-grade">
-        <div class="fat-cartao fat-numeros">
-            <div><h2>Faturamento do mês</h2><p class="heroi">${moeda(m.atual)}</p><p class="apoio">${variacao}</p></div>
-            <div><h2>Ticket médio</h2><p class="heroi">${m.quantidade ? moeda(m.ticket) : '-'}</p>
-                <p class="apoio">${m.quantidade} venda${m.quantidade === 1 ? '' : 's'} concluída${m.quantidade === 1 ? '' : 's'} no mês</p></div>
+    const percentualMeta = m.meta ? m.atual / m.meta * 100 : 0;
+    const falta = m.meta - m.atual;
+    const kpi = (classe, icone, titulo, valor, apoio) => `
+        <div class="fat-kpi ${classe}">
+            <span class="fat-kpi-icone"><i class="fa-solid ${icone}" aria-hidden="true"></i></span>
+            <div><h2>${titulo}</h2><p class="heroi">${valor}</p><p class="apoio">${apoio}</p></div>
+        </div>`;
+    const cartao = (classe, icone, titulo, corpo) => `
+        <section class="fat-cartao ${classe}">
+            <header class="fat-cabeca"><i class="fa-solid ${icone}" aria-hidden="true"></i><h2>${titulo}</h2></header>
+            <div class="fat-corpo">${corpo}</div>
+        </section>`;
+    painel.innerHTML = `
+        <div class="fat-kpis">
+            ${kpi('kpi-faturamento', 'fa-sack-dollar', 'Faturamento do mês', moeda(m.atual), variacao)}
+            ${kpi('kpi-ticket', 'fa-receipt', 'Ticket médio', m.quantidade ? moeda(m.ticket) : '-',
+                `${m.quantidade} venda${m.quantidade === 1 ? '' : 's'} concluída${m.quantidade === 1 ? '' : 's'} no mês`)}
+            ${kpi('kpi-receber', 'fa-hourglass-half', 'A receber', moeda(m.aReceber), 'vendas na etapa de pagamento')}
+            ${kpi('kpi-meta', 'fa-bullseye', 'Meta do mês', `${Math.round(percentualMeta)}%`, `${moeda(m.atual)} de ${moeda(m.meta)}`)}
         </div>
-        <div class="fat-cartao fat-linha"><h2>Receita por mês</h2>${graficoLinha(m.serie)}</div>
-        <div class="fat-cartao fat-rosca"><h2>Receita por navio</h2>${graficoRosca(m.porPacote)}</div>
-        <div class="fat-cartao fat-status"><h2>Status do faturamento</h2>${barras([
+        <div class="fat-grade">
+        ${cartao('fat-linha cab-azul', 'fa-chart-line', 'Receita por mês', graficoLinha(m.serie))}
+        ${cartao('fat-rosca cab-escuro', 'fa-chart-pie', 'Receita por navio', graficoRosca(m.porPacote))}
+        ${cartao('fat-status cab-amarelo', 'fa-scale-balanced', 'Status do faturamento', barras([
             { nome: 'Concluído/Recebido', valor: m.atual, cor: 'var(--bom)', icone: 'fa-circle-check' },
             { nome: 'A receber', valor: m.aReceber, cor: 'var(--serie-1)', icone: 'fa-clock' }
-        ])}</div>
-        <div class="fat-cartao fat-meta"><h2>Meta de vendas do mês</h2>${barras([
-            { nome: 'Realizado', valor: m.atual, cor: 'var(--bom)', icone: 'fa-circle-check' },
-            { nome: 'Meta do mês', valor: m.meta, cor: 'var(--neutro)' }
-        ])}
-            <label class="meta-campo">Alterar meta (R$) <input type="number" id="meta" min="1" step="100" value="${m.meta}"></label>
-        </div>
+        ]))}
+        ${cartao('fat-meta cab-degrade', 'fa-bullseye', 'Meta de vendas do mês', `
+            <div class="meta-progresso" role="img" aria-label="${Math.round(percentualMeta)}% da meta atingida">
+                <div class="meta-feito" style="width:${Math.min(percentualMeta, 100)}%"></div>
+                <span class="meta-pct">${Math.round(percentualMeta)}%</span>
+            </div>
+            <div class="meta-legenda">
+                <span><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Realizado <strong>${moeda(m.atual)}</strong></span>
+                <span><i class="fa-solid fa-flag-checkered" aria-hidden="true"></i> Meta <strong>${moeda(m.meta)}</strong></span>
+            </div>
+            <p class="meta-falta">${falta > 0 ? `Faltam <strong>${moeda(falta)}</strong> para bater a meta.` : '<strong>Meta batida!</strong> Parabéns à equipe.'}</p>
+            <label class="meta-campo">Alterar meta (R$) <input type="number" id="meta" min="1" step="100" value="${m.meta}"></label>`)}
         <details class="fat-cartao fat-tabela"><summary>Ver dados em tabela</summary>
             <table><thead><tr><th>Mês</th><th>Receita</th></tr></thead>
             <tbody>${m.serie.map(s => `<tr><td>${esc(s.rotulo)}</td><td>${moeda(s.valor)}</td></tr>`).join('')}</tbody></table>
@@ -346,12 +447,87 @@ function desenharFaturamento() {
     </div>`;
 }
 
+// ---------- Mensagens ----------
+let conversaAberta = null;
+const quando = iso => new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+const ORIGENS = { conta: 'Cliente cadastrado', visitante: 'Visitante', exemplo: 'Exemplo' };
+const ultimaMensagem = c => c.mensagens[c.mensagens.length - 1];
+
+function avisarChat() {
+    document.getElementById('chat')?.dispatchEvent(new Event('oceanun-mensagens'));
+}
+
+function desenharMensagens() {
+    const ordenar = lista => lista.filter(c => c.mensagens.length)
+        .sort((a, b) => ultimaMensagem(b).em.localeCompare(ultimaMensagem(a).em));
+    let conversas = ordenar(Catalogo.listarConversas())
+        .filter(c => combina(c.nome, c.email || '', ...c.mensagens.map(m => m.texto)));
+    if (!conversas.some(c => c.id === conversaAberta)) conversaAberta = conversas[0]?.id || null;
+    const aberta = conversas.find(c => c.id === conversaAberta);
+    if (aberta && Catalogo.naoLidas(aberta, 'admin')) {
+        Catalogo.marcarLida(aberta.id, 'admin');
+        conversas = conversas.map(c => c.id === aberta.id ? Catalogo.listarConversas().find(x => x.id === c.id) : c);
+        avisarChat();
+    }
+    painel.innerHTML = `<div class="msg-grade">
+        <ul class="msg-lista">${conversas.map(c => {
+            const n = Catalogo.naoLidas(c, 'admin');
+            return `<li><button type="button" data-conversa="${esc(c.id)}"${c.id === conversaAberta ? ' aria-current="true"' : ''}>
+                <span class="msg-nome">${esc(c.nome)}${n ? `<b class="msg-nova">${n} nova${n > 1 ? 's' : ''}</b>` : ''}</span>
+                <span class="msg-previa">${esc(ultimaMensagem(c).texto)}</span>
+                <small>${esc(ORIGENS[c.origem] || '')} · ${quando(ultimaMensagem(c).em)}</small>
+            </button></li>`;
+        }).join('') || '<li class="vazio">Nenhuma mensagem ainda. As dúvidas enviadas pelo chat do site aparecem aqui.</li>'}</ul>
+        <div class="msg-conversa">${aberta ? `
+            <header class="msg-topo">
+                <div><strong>${esc(aberta.nome)}</strong><small>${esc(aberta.email || 'Visitante sem cadastro')}</small></div>
+                <button type="button" class="perfil-btn perigo" data-excluir-conversa="${esc(aberta.id)}">Excluir conversa</button>
+            </header>
+            <div class="msg-historico" id="msg-historico">${aberta.mensagens.map(m => `
+                <div class="msg-balao ${m.de === 'admin' ? 'equipe' : 'cliente'}">
+                    <p>${esc(m.texto)}</p><small>${m.de === 'admin' ? 'Equipe' : esc(aberta.nome.split(' ')[0])} · ${quando(m.em)}</small>
+                </div>`).join('')}</div>
+            <form class="msg-resposta" id="form-resposta">
+                <label for="resposta" class="sr">Resposta para ${esc(aberta.nome)}</label>
+                <textarea id="resposta" rows="2" maxlength="500" placeholder="Escreva a resposta (Enter envia, Shift+Enter quebra linha)"></textarea>
+                <button type="submit" class="perfil-btn">Responder</button>
+            </form>` : '<p class="vazio">Selecione uma conversa.</p>'}
+        </div>
+    </div>`;
+    const historico = document.getElementById('msg-historico');
+    if (historico) historico.scrollTop = historico.scrollHeight;
+}
+
+function enviarResposta() {
+    const campo = document.getElementById('resposta');
+    if (!campo.value.trim()) return;
+    if (!Catalogo.responderConversa(conversaAberta, campo.value)) {
+        alert('Não foi possível enviar a resposta neste navegador.');
+        return;
+    }
+    desenhar();
+    document.getElementById('resposta')?.focus();
+}
+
+painel.addEventListener('submit', e => {
+    if (e.target.id !== 'form-resposta') return;
+    e.preventDefault();
+    enviarResposta();
+});
+painel.addEventListener('keydown', e => {
+    if (e.target.id === 'resposta' && e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        enviarResposta();
+    }
+});
+
 // ---------- Navegação entre as telas ----------
 const ABAS = {
-    vendas: { titulo: 'Vendas', desenhar: desenharVendas, novo: () => formularioVenda() },
-    clientes: { titulo: 'Clientes', desenhar: desenharClientes, novo: () => formularioCliente() },
-    tarefas: { titulo: 'Tarefas e lembretes', desenhar: desenharTarefas, novo: () => formularioTarefa() },
-    faturamento: { titulo: 'Faturamento', desenhar: desenharFaturamento }
+    vendas: { titulo: 'Vendas', desenhar: desenharVendas, novo: () => formularioVenda(), busca: true },
+    clientes: { titulo: 'Clientes', desenhar: desenharClientes, novo: () => formularioCliente(), busca: true },
+    tarefas: { titulo: 'Tarefas e lembretes', desenhar: desenharTarefas, novo: () => formularioTarefa(), busca: true },
+    faturamento: { titulo: 'Faturamento', desenhar: desenharFaturamento },
+    mensagens: { titulo: 'Mensagens', desenhar: desenharMensagens, busca: true }
 };
 const abaAtual = () => ABAS[location.hash.slice(1)] ? location.hash.slice(1) : 'vendas';
 
@@ -359,7 +535,7 @@ function desenhar() {
     const nome = abaAtual();
     const aba = ABAS[nome];
     document.getElementById('admin-titulo').textContent = aba.titulo;
-    document.getElementById('admin-busca').hidden = !aba.novo;
+    document.getElementById('admin-busca').hidden = !aba.busca;
     novo.hidden = !aba.novo;
     document.querySelectorAll('[data-aba]').forEach(a => {
         const ativa = a.dataset.aba === nome;
@@ -371,6 +547,10 @@ function desenhar() {
     selo.textContent = contagem;
     selo.hidden = !contagem;
     aba.desenhar();
+    const novas = Catalogo.listarConversas().filter(c => Catalogo.naoLidas(c, 'admin')).length;
+    const seloMensagens = document.getElementById('selo-mensagens');
+    seloMensagens.textContent = novas;
+    seloMensagens.hidden = !novas;
 }
 
 painel.addEventListener('click', e => {
@@ -391,6 +571,18 @@ painel.addEventListener('click', e => {
     } else if (d.concluir) {
         db.tarefas.find(t => t.id === d.concluir).feita = true;
         persistir();
+    } else if (d.filtro) {
+        filtroStatus = filtroStatus === d.filtro ? 'todos' : d.filtro;
+        desenhar();
+    } else if (d.conversa) {
+        conversaAberta = d.conversa;
+        desenhar();
+    } else if (d.excluirConversa) {
+        if (!confirm('Excluir esta conversa?')) return;
+        Catalogo.excluirConversa(d.excluirConversa);
+        conversaAberta = null;
+        desenhar();
+        avisarChat();
     } else if (d.ordenar) {
         if (ordenacao.campo === d.ordenar) ordenacao.direcao *= -1;
         else Object.assign(ordenacao, { campo: d.ordenar, direcao: 1 });
@@ -436,6 +628,18 @@ document.getElementById('admin-sair').addEventListener('click', () => {
 window.addEventListener('hashchange', () => {
     busca.value = '';
     desenhar();
+});
+
+// Novas dúvidas chegam enquanto o painel está aberto em outra aba; o rascunho da resposta é mantido
+window.addEventListener('storage', e => {
+    if (e.key !== Catalogo.CHAVE_MENSAGENS || dialogo.open) return;
+    const campo = document.getElementById('resposta');
+    const rascunho = campo?.value;
+    const focado = document.activeElement === campo;
+    desenhar();
+    const novo = document.getElementById('resposta');
+    if (novo && rascunho) novo.value = rascunho;
+    if (novo && focado) novo.focus();
 });
 
 if (Catalogo.ehAdmin()) desenhar();

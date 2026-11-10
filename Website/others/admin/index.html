@@ -39,14 +39,16 @@
             </a>
         </div>
     </nav>
-    <nav class="secondary-nav">
-        <ul class="secondary-links">
-            <li><a href="#vendas" data-aba="vendas"><i class="fa-solid fa-circle-dollar-to-slot"></i> Vendas</a></li>
-            <li><a href="#clientes" data-aba="clientes"><i class="fa-solid fa-handshake"></i> Clientes</a></li>
-            <li><a href="#tarefas" data-aba="tarefas"><i class="fa-solid fa-calendar-days"></i> Tarefas e lembretes</a></li>
-            <li><a href="#faturamento" data-aba="faturamento"><i class="fa-solid fa-chart-line"></i> Faturamento</a></li>
+    <div class="admin-layout">
+    <aside class="admin-lateral" aria-label="Administração">
+        <ul>
+            <li><a href="#vendas" data-aba="vendas"><i class="fa-solid fa-circle-dollar-to-slot"></i><span>Vendas</span></a></li>
+            <li><a href="#clientes" data-aba="clientes"><i class="fa-solid fa-handshake"></i><span>Clientes</span></a></li>
+            <li><a href="#tarefas" data-aba="tarefas"><i class="fa-solid fa-calendar-days"></i><span>Tarefas</span></a></li>
+            <li><a href="#faturamento" data-aba="faturamento"><i class="fa-solid fa-chart-line"></i><span>Faturamento</span></a></li>
+            <li><a href="#mensagens" data-aba="mensagens"><i class="fa-solid fa-comments"></i><span>Mensagens</span><b class="lateral-selo" id="selo-mensagens" hidden></b></a></li>
         </ul>
-    </nav>
+    </aside>
 
     <main class="admin">
         <header class="admin-topo">
@@ -64,6 +66,7 @@
         <p class="admin-nota">Demonstração: pacotes e preços vêm do catálogo do site e as contas cadastradas entram como clientes. Os demais clientes e vendas são exemplos fictícios.</p>
         <section id="painel"></section>
     </main>
+    </div>
 
     <dialog id="dialogo" class="admin-dialogo" aria-labelledby="dialogo-titulo"></dialog>
     <div id="dica" role="status" hidden></div>

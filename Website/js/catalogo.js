@@ -8,6 +8,14 @@ const Catalogo = (() => {
     const CHAVE_ADMIN = 'oceanun-admin';
     const ADMIN = { usuario: 'admin', senha: 'admin123' };
     const PAGINA_ADMIN = BASE + 'others/admin/index.html';
+    const CONTATO = {
+        whatsapp: 'https://wa.me/5519978194930',
+        telefone: '(19) 97819-4930',
+        instagram: 'https://www.instagram.com/oceanun.ag/',
+        usuarioInstagram: '@oceanun.ag'
+    };
+    const CHAVE_MENSAGENS = 'oceanun-mensagens';
+    const CHAVE_VISITANTE = 'oceanun-visitante';
     const PAGINA_PERFIL = BASE + 'others/perfil/index.html';
 
     // ---------- Formatação ----------
@@ -160,7 +168,8 @@ const Catalogo = (() => {
 
         const sal = paraHex(crypto.getRandomValues(new Uint8Array(16)));
         const hash = await gerarHash(dados.senha, sal);
-        return gravarContas([...contas, { ...perfil, sal, hash }], perfil.email) ? { ok: true, perfil } : ERRO_SALVAR;
+        const conta = { ...perfil, criadoEm: new Date().toISOString(), sal, hash };
+        return gravarContas([...contas, conta], perfil.email) ? { ok: true, perfil: lerPerfil() } : ERRO_SALVAR;
     }
 
     // A sessão de administrador termina quando o navegador é fechado
@@ -203,13 +212,159 @@ const Catalogo = (() => {
         const { perfil, erros } = validarPerfil(dados);
         Object.assign(erros, errosDeDuplicidade(perfil, contas.filter(c => c !== atual)));
         if (Object.keys(erros).length) return { ok: false, erros };
-        const novas = contas.map(c => c === atual ? { ...perfil, sal: c.sal, hash: c.hash } : c);
-        return gravarContas(novas, perfil.email) ? { ok: true, perfil } : ERRO_SALVAR;
+        // Mantém foto, endereço, preferências e senha da conta
+        const novas = contas.map(c => c === atual ? { ...c, ...perfil } : c);
+        return gravarContas(novas, perfil.email) ? { ok: true, perfil: lerPerfil() } : ERRO_SALVAR;
+    }
+
+    // Foto, endereço e preferências de contato da conta logada
+    function salvarExtras(extras) {
+        const email = emailDaSessao();
+        const contas = lerContas();
+        const atual = contas.find(c => c.email === email);
+        if (!atual) return { ok: false, erros: { geral: 'Entre na sua conta para continuar.' } };
+        const erros = {};
+        const mudancas = {};
+        if ('foto' in extras) {
+            if (extras.foto !== null && (!/^data:image\/jpeg;base64,/.test(extras.foto) || extras.foto.length > 400000)) {
+                erros.foto = 'Não foi possível usar esta imagem.';
+            }
+            mudancas.foto = extras.foto;
+        }
+        if ('endereco' in extras) {
+            const e = extras.endereco;
+            const endereco = {
+                cep: String(e.cep || '').replace(/\D/g, ''),
+                rua: String(e.rua || '').trim().slice(0, 120),
+                numero: String(e.numero || '').trim().slice(0, 10),
+                complemento: String(e.complemento || '').trim().slice(0, 60),
+                cidade: String(e.cidade || '').trim().slice(0, 80),
+                uf: String(e.uf || '').toUpperCase()
+            };
+            if (endereco.cep && endereco.cep.length !== 8) erros.cep = 'O CEP deve ter 8 dígitos.';
+            if (endereco.uf && !/^[A-Z]{2}$/.test(endereco.uf)) erros.uf = 'Escolha um estado.';
+            mudancas.endereco = endereco;
+        }
+        if ('preferencias' in extras) {
+            const p = extras.preferencias;
+            mudancas.preferencias = { email: Boolean(p.email), whatsapp: Boolean(p.whatsapp), destino: String(p.destino || '').slice(0, 60) };
+        }
+        if (Object.keys(erros).length) return { ok: false, erros };
+        const novas = contas.map(c => c === atual ? { ...c, ...mudancas } : c);
+        if (!gravarContas(novas, email)) return ERRO_SALVAR;
+        atualizarAvatarTopo();
+        return { ok: true, perfil: lerPerfil() };
+    }
+
+    async function alterarSenha(senhaAtual, nova, confirmar) {
+        if (!window.crypto?.subtle) return ERRO_SENHA_INDISPONIVEL;
+        const email = emailDaSessao();
+        const contas = lerContas();
+        const conta = contas.find(c => c.email === email);
+        if (!conta) return { ok: false, erros: { geral: 'Entre na sua conta para continuar.' } };
+        const erros = {};
+        if (await gerarHash(String(senhaAtual), conta.sal) !== conta.hash) erros.atual = 'A senha atual está incorreta.';
+        if (String(nova).length < 8) erros.nova = 'A nova senha deve ter pelo menos 8 caracteres.';
+        else if (nova !== confirmar) erros.confirmar = 'As senhas não são iguais.';
+        if (Object.keys(erros).length) return { ok: false, erros };
+        const sal = paraHex(crypto.getRandomValues(new Uint8Array(16)));
+        const hash = await gerarHash(nova, sal);
+        return gravarContas(contas.map(c => c === conta ? { ...c, sal, hash } : c), email) ? { ok: true } : ERRO_SALVAR;
+    }
+
+    // Mostra a foto de perfil no ícone "Minha conta" do menu
+    function atualizarAvatarTopo() {
+        const link = document.querySelector('nav a[aria-label="Minha conta"]');
+        if (!link) return;
+        const foto = lerPerfil()?.foto;
+        let img = link.querySelector('img.avatar-topo');
+        // O Font Awesome força display no ícone, então o atributo hidden não basta
+        const icone = link.querySelector('i');
+        if (icone) icone.style.display = foto ? 'none' : '';
+        if (!foto) { img?.remove(); return; }
+        if (!img) {
+            img = document.createElement('img');
+            img.className = 'avatar-topo';
+            img.alt = '';
+            Object.assign(img.style, { width: '34px', height: '34px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #fbbf4b' });
+            link.appendChild(img);
+        }
+        img.src = foto;
     }
 
     function excluirPerfil() {
         const email = emailDaSessao();
         gravarContas(lerContas().filter(c => c.email !== email), null);
+    }
+
+    // ---------- Dúvidas enviadas pelo chat (localStorage) ----------
+    // Cada visitante ou conta tem uma conversa; o administrador lê e responde no painel.
+    function listarConversas() {
+        try { return JSON.parse(localStorage.getItem(CHAVE_MENSAGENS)) || []; } catch { return []; }
+    }
+    function gravarConversas(lista) {
+        try { localStorage.setItem(CHAVE_MENSAGENS, JSON.stringify(lista)); return true; } catch { return false; }
+    }
+
+    function minhaConversaId() {
+        const perfil = lerPerfil();
+        if (perfil) return 'conta:' + perfil.email;
+        let visitante = 'anonimo';
+        try {
+            visitante = localStorage.getItem(CHAVE_VISITANTE);
+            if (!visitante) {
+                visitante = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+                localStorage.setItem(CHAVE_VISITANTE, visitante);
+            }
+        } catch {}
+        return 'visitante:' + visitante;
+    }
+    const minhaConversa = () => listarConversas().find(c => c.id === minhaConversaId()) || null;
+
+    function adicionarMensagem(id, de, texto, dadosNovaConversa) {
+        texto = String(texto).trim().slice(0, 500);
+        if (!texto) return false;
+        const lista = listarConversas();
+        let conversa = lista.find(c => c.id === id);
+        if (!conversa) {
+            if (!dadosNovaConversa) return false;
+            conversa = { id, ...dadosNovaConversa, mensagens: [], lidaAdmin: '', lidaCliente: '' };
+            lista.push(conversa);
+        }
+        const em = new Date().toISOString();
+        conversa.mensagens.push({ de, texto, em });
+        conversa[de === 'admin' ? 'lidaAdmin' : 'lidaCliente'] = em;
+        return gravarConversas(lista);
+    }
+
+    function enviarDuvida(texto) {
+        const perfil = lerPerfil();
+        return adicionarMensagem(minhaConversaId(), 'cliente', texto,
+            { nome: perfil ? perfil.nome : 'Visitante', email: perfil ? perfil.email : null, origem: perfil ? 'conta' : 'visitante' });
+    }
+    const responderConversa = (id, texto) => adicionarMensagem(id, 'admin', texto);
+
+    // lado: 'admin' conta as mensagens do cliente não lidas; 'cliente' conta as respostas não lidas
+    function naoLidas(conversa, lado) {
+        if (!conversa) return 0;
+        const lida = lado === 'admin' ? conversa.lidaAdmin : conversa.lidaCliente;
+        return conversa.mensagens.filter(m => (m.de === 'admin') === (lado === 'cliente') && m.em > lida).length;
+    }
+
+    function marcarLida(id, lado) {
+        const lista = listarConversas();
+        const conversa = lista.find(c => c.id === id);
+        if (!conversa) return;
+        conversa[lado === 'admin' ? 'lidaAdmin' : 'lidaCliente'] = new Date().toISOString();
+        gravarConversas(lista);
+    }
+
+    const excluirConversa = id => gravarConversas(listarConversas().filter(c => c.id !== id));
+
+    function adicionarConversas(novas) {
+        const lista = listarConversas();
+        novas.forEach(c => { if (!lista.some(x => x.id === c.id)) lista.push(c); });
+        return gravarConversas(lista);
     }
 
     // Convite para cadastro: aparece uma vez por sessão e pode ser dispensado
@@ -251,11 +406,16 @@ const Catalogo = (() => {
         const el = document.createElement('article');
         el.className = 'card compacto';
         el.innerHTML = `
-            <img src="${img(p)}" alt="Navio ${p.navio}">
+            <div class="card-foto">
+                <img src="${img(p)}" alt="Navio ${p.navio}">
+                <span class="card-noites"><i class="fa-solid fa-moon" aria-hidden="true"></i> ${noites(p)} noites</span>
+                <span class="card-preco">${moeda(p.valor)}<small>para até ${p.pessoas} pessoa${p.pessoas > 1 ? 's' : ''}</small></span>
+            </div>
             <div class="card-info">
-                <h3><i class="fa-solid fa-ship"></i> ${p.navio}</h3>
-                <p>Embarque e desembarque: ${p.embarque}</p>
-                <p class="data">Data: ${periodo(p)}</p>
+                <h3><i class="fa-solid fa-ship" aria-hidden="true"></i> ${p.navio}</h3>
+                <p><i class="fa-solid fa-anchor" aria-hidden="true"></i> Embarque e desembarque: ${p.embarque}</p>
+                <p class="data"><i class="fa-regular fa-calendar" aria-hidden="true"></i> ${periodo(p)}</p>
+                <ul class="card-servicos">${p.servicos.slice(0, 3).map(s => `<li>${s}</li>`).join('')}</ul>
                 <button class="btn amarelo add-to-cart">Contratar Pacote</button>
             </div>`;
         const btn = el.querySelector('.add-to-cart');
@@ -322,6 +482,63 @@ const Catalogo = (() => {
         menu.appendChild(li);
     }
 
+    // Rodapé igual em todas as páginas
+    function montarRodape() {
+        const rodape = document.querySelector('body > footer');
+        if (!rodape || rodape.classList.contains('rodape')) return;
+        const pagina = caminho => BASE + caminho;
+        const externo = 'target="_blank" rel="noopener"';
+        rodape.className = 'rodape';
+        rodape.innerHTML = `
+            <svg class="rodape-onda" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0,30 C240,60 480,0 720,24 C960,48 1200,6 1440,30 L1440,60 L0,60 Z"/>
+            </svg>
+            <div class="rodape-conteudo">
+                <div class="rodape-marca">
+                    <a href="${pagina('index.html')}" class="rodape-logo">
+                        <img src="${pagina('img/image.png')}" alt="">
+                        <span>Oceanun</span>
+                    </a>
+                    <p>Cruzeiros e pacotes de viagem saindo de Santos, com atendimento de perto do primeiro contato ao embarque.</p>
+                    <div class="rodape-sociais">
+                        <a href="${CONTATO.whatsapp}" ${externo} class="social-whats" aria-label="WhatsApp da Oceanun"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="${CONTATO.instagram}" ${externo} class="social-insta" aria-label="Instagram da Oceanun"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="rodape-coluna">
+                    <h2>Navegue</h2>
+                    <ul>
+                        <li><a href="${pagina('index.html')}">Início</a></li>
+                        <li><a href="${pagina('others/cruzeiros/index.html')}">Cruzeiros</a></li>
+                        <li><a href="${pagina('others/pacotes/index.html')}">Pacotes</a></li>
+                        <li><a href="${pagina('others/sobre/index.html')}">Conheça a Oceanun</a></li>
+                    </ul>
+                </div>
+                <div class="rodape-coluna">
+                    <h2>Atendimento</h2>
+                    <ul>
+                        <li><a href="${pagina('others/orcamento/index.html')}">Solicite seu orçamento</a></li>
+                        <li><a href="${pagina('others/perfil/ajuda/index.html')}">Central de ajuda</a></li>
+                        <li><a href="${pagina('others/perfil/index.html')}">Minha conta</a></li>
+                        <li><a href="${pagina('others/carrinho/index.html')}">Carrinho</a></li>
+                    </ul>
+                </div>
+                <div class="rodape-coluna">
+                    <h2>Fale com a gente</h2>
+                    <ul class="rodape-contato">
+                        <li><a href="${CONTATO.whatsapp}" ${externo}><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> ${CONTATO.telefone}</a></li>
+                        <li><a href="${CONTATO.instagram}" ${externo}><i class="fa-brands fa-instagram" aria-hidden="true"></i> ${CONTATO.usuarioInstagram}</a></li>
+                        <li><i class="fa-solid fa-comments" aria-hidden="true"></i> Chat aqui no site</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="rodape-base">
+                <p>&copy; 2026 Oceanun. Todos os direitos reservados.</p>
+                <button type="button" class="rodape-topo"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Voltar ao topo</button>
+            </div>`;
+        rodape.querySelector('.rodape-topo').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
     // Barra de pesquisa do topo -> página de pacotes com ?q=
     function ligarPesquisa() {
         const form = document.querySelector('nav form.pesquisa');
@@ -335,8 +552,10 @@ const Catalogo = (() => {
 
     document.addEventListener('DOMContentLoaded', () => {
         montarMenu();
+        montarRodape();
         ligarPesquisa();
         atualizarContador();
+        atualizarAvatarTopo();
         mostrarPopupCadastro();
         const chat = document.createElement('script');
         chat.src = BASE + 'js/chat.js';
@@ -346,5 +565,8 @@ const Catalogo = (() => {
     return { BASE, moeda, data, periodo, noites, img, todos, porId, destaques, destinos, servicos,
              buscar, renderizar, card, adicionar, remover, itensCarrinho, lerCarrinho,
              criarPerfil, lerPerfil, atualizarPerfil, excluirPerfil, entrar, sair,
-             ehAdmin, sairAdmin, contas, cpfValido, PAGINA_ADMIN, PAGINA_PERFIL };
+             ehAdmin, sairAdmin, contas, cpfValido, PAGINA_ADMIN, PAGINA_PERFIL,
+             CHAVE_MENSAGENS, listarConversas, minhaConversa, enviarDuvida, responderConversa,
+             naoLidas, marcarLida, excluirConversa, adicionarConversas,
+             salvarExtras, alterarSenha, atualizarAvatarTopo, CONTATO };
 })();
