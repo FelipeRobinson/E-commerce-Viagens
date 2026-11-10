@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oceanun - Administração</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../perfil/style.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="../../img/image.png">
+</head>
+<body>
+    <nav>
+        <a href="../../index.html" class="logo">
+            <img src="../../img/image.png" alt="Logo Oceanun">
+            <span>Oceanun</span>
+        </a>
+        <ul class="menu">
+            <li><a href="../../index.html">Início</a></li>
+            <li><a href="../cruzeiros/index.html">Cruzeiros</a></li>
+            <li><a href="../pacotes/index.html">Pacotes</a></li>
+        </ul>
+        <div class="acoes">
+            <form class="pesquisa" role="search">
+                <input type="text" placeholder="Pesquisar">
+                <button type="submit" aria-label="Pesquisar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+            <a href="../carrinho/index.html" class="icone" aria-label="Carrinho">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
+            <a href="index.html" class="icone" aria-label="Minha conta">
+                <i class="fa-solid fa-circle-user"></i>
+            </a>
+        </div>
+    </nav>
+    <nav class="secondary-nav">
+        <ul class="secondary-links">
+            <li><a href="#vendas" data-aba="vendas"><i class="fa-solid fa-circle-dollar-to-slot"></i> Vendas</a></li>
+            <li><a href="#clientes" data-aba="clientes"><i class="fa-solid fa-handshake"></i> Clientes</a></li>
+            <li><a href="#tarefas" data-aba="tarefas"><i class="fa-solid fa-calendar-days"></i> Tarefas e lembretes</a></li>
+            <li><a href="#faturamento" data-aba="faturamento"><i class="fa-solid fa-chart-line"></i> Faturamento</a></li>
+        </ul>
+    </nav>
+
+    <main class="admin">
+        <header class="admin-topo">
+            <h1 id="admin-titulo"></h1>
+            <label class="admin-busca" id="admin-busca">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="search" id="busca" placeholder="Pesquisar..." aria-label="Pesquisar nesta tela">
+            </label>
+            <button type="button" class="admin-icone" id="admin-novo" aria-label="Adicionar"><i class="fa-solid fa-plus"></i></button>
+            <button type="button" class="admin-icone admin-sino" id="admin-sino" aria-label="Tarefas pendentes">
+                <i class="fa-regular fa-bell"></i><span id="sino-contagem" hidden></span>
+            </button>
+            <button type="button" class="admin-sair" id="admin-sair"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+        </header>
+        <p class="admin-nota">Demonstração: pacotes e preços vêm do catálogo do site e as contas cadastradas entram como clientes. Os demais clientes e vendas são exemplos fictícios.</p>
+        <section id="painel"></section>
+    </main>
+
+    <dialog id="dialogo" class="admin-dialogo" aria-labelledby="dialogo-titulo"></dialog>
+    <div id="dica" role="status" hidden></div>
+
+    <footer>
+        <p>&copy; 2026 Oceanun. Todos os direitos reservados.</p>
+    </footer>
+    <button id="chat" aria-label="ChatBot"><i class="fa-solid fa-comments"></i></button>
+
+    <script src="../../js/pacotes-db.js"></script>
+    <script src="../../js/catalogo.js"></script>
+    <script src="../../js/admin-db.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>

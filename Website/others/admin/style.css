@@ -1,0 +1,670 @@
+.admin {
+    --fundo: #eef1ff;
+    --superficie: #fcfcfb;
+    --azul-painel: #0153c2;
+    --texto: #0b0b0b;
+    --texto-2: #52514e;
+    --grade: #e4e3df;
+    --serie-1: #2a78d6;
+    --serie-2: #eb6834;
+    --serie-3: #1baf7a;
+    --bom: #008300;
+    --neutro: #9a9994;
+    width: 100%;
+    background: var(--fundo);
+    color: var(--texto);
+    padding: 16px clamp(16px, 3vw, 40px) 110px;
+}
+
+/* A navegação administrativa tem mais itens que a do perfil */
+.secondary-nav {
+    height: auto;
+    min-height: 47px;
+    padding: 8px 16px;
+}
+
+.secondary-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 40px;
+}
+
+.sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+}
+
+.admin-topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+}
+
+.admin-topo h1 {
+    font-family: var(--font-main);
+    font-weight: 400;
+    font-size: 28px;
+    margin-right: auto;
+}
+
+.admin-busca {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 1 400px;
+    background: #d3dbfb;
+    border-radius: 18px;
+    padding: 8px 14px;
+}
+
+.admin-busca input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font: inherit;
+}
+
+.admin-busca:focus-within {
+    outline: 2px solid var(--azul-painel);
+}
+
+.admin-icone {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: #d3dbfb;
+    color: var(--azul-painel);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.admin-sino {
+    background: none;
+    color: var(--texto);
+    font-size: 26px;
+}
+
+#sino-contagem {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 20px;
+    padding: 2px 4px;
+    border-radius: 10px;
+    background: #B3261E;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.admin-sair {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 22px;
+    background: var(--azul-painel);
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+}
+
+.admin-nota {
+    margin: 8px 0 16px;
+    color: var(--texto-2);
+    font-size: 13px;
+}
+
+.vazio {
+    color: var(--texto-2);
+    padding: 12px;
+}
+
+/* Vendas */
+.kanban {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.kanban-coluna h2 {
+    position: relative;
+    font-family: var(--font-main);
+    font-weight: 400;
+    font-size: 28px;
+    text-align: center;
+    padding: 8px 0;
+    margin-bottom: 12px;
+    background: #fff;
+}
+
+.kanban-coluna h2 small {
+    font-size: 13px;
+    color: var(--texto-2);
+}
+
+.kanban-coluna h2 .fa-chevron-right {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.venda-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+}
+
+.venda-card p {
+    margin-top: 4px;
+    font-size: 14px;
+}
+
+.venda-nome {
+    border: none;
+    background: none;
+    padding: 0;
+    font: inherit;
+    font-weight: 600;
+    font-size: 18px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.venda-nome:hover {
+    text-decoration: underline;
+}
+
+.avancar {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: #a6a5a0;
+    cursor: pointer;
+}
+
+/* Clientes */
+.tabela-rolagem {
+    overflow-x: auto;
+}
+
+.tabela-clientes {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.tabela-clientes th {
+    background: var(--fundo);
+    border-bottom: 2px solid #c9cdd9;
+    text-align: left;
+    padding: 12px;
+}
+
+.tabela-clientes th button {
+    border: none;
+    background: none;
+    font: inherit;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.tabela-clientes td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #edeef3;
+}
+
+.alterar {
+    min-height: 40px;
+    min-width: 110px;
+    border: none;
+    border-radius: 20px;
+    background: var(--azul-painel);
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+}
+
+/* Tarefas */
+.tarefas-topo {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.semana {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    min-height: 240px;
+}
+
+.semana-dia {
+    padding: 0 4px 8px;
+    border-right: 3px solid var(--texto);
+}
+
+.semana-dia:last-child {
+    border-right: none;
+}
+
+.semana-dia h2 {
+    font-family: var(--font-main);
+    font-weight: 400;
+    font-size: 18px;
+    text-align: center;
+    border-bottom: 3px solid var(--texto);
+    margin: 0 -4px 6px;
+    padding-bottom: 2px;
+}
+
+.semana-dia h2 small {
+    font-size: 12px;
+    color: var(--texto-2);
+}
+
+.semana-dia.hoje h2 {
+    font-weight: 600;
+}
+
+.semana-tarefa {
+    display: block;
+    width: 100%;
+    min-height: 36px;
+    margin-bottom: 4px;
+    padding: 6px;
+    border: none;
+    border-radius: 8px;
+    background: #5272f2;
+    color: #fff;
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.tarefas-base {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 40px;
+    align-items: center;
+}
+
+.tarefas-pilha .tarefas-bloco:first-child {
+    border-radius: 12px 12px 0 0;
+    border-bottom: 2px solid #023b8a;
+}
+
+.tarefas-pilha .tarefas-bloco:last-child {
+    border-radius: 0 0 12px 12px;
+}
+
+.tarefas-bloco {
+    background: var(--azul-painel);
+    color: #fff;
+    border-radius: 12px;
+    padding: 16px 24px;
+}
+
+.tarefas-bloco h2 {
+    font-family: var(--font-main);
+    font-weight: 400;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.tarefas-bloco ul {
+    list-style: none;
+}
+
+.tarefas-bloco li {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.concluir,
+.tarefa-texto {
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.concluir {
+    flex: none;
+    width: 32px;
+    height: 32px;
+}
+
+.tarefa-texto {
+    padding: 5px 0;
+    text-align: left;
+    font-size: 15px;
+}
+
+.tarefa-texto small {
+    opacity: .85;
+    margin-left: 4px;
+}
+
+.vazio-claro {
+    padding: 4px 0;
+}
+
+/* Faturamento */
+.fat-grade {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1.6fr;
+    gap: 16px;
+}
+
+.fat-cartao {
+    background: var(--superficie);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.fat-cartao h2 {
+    font-family: var(--font-main);
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.fat-numeros {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 16px;
+    text-align: center;
+}
+
+.fat-numeros h2 {
+    margin-bottom: 4px;
+}
+
+.heroi {
+    font-size: 28px;
+}
+
+.apoio {
+    font-size: 13px;
+    color: var(--texto-2);
+}
+
+.sobe {
+    color: var(--bom);
+}
+
+.desce {
+    color: #B3261E;
+}
+
+.fat-status {
+    grid-column: span 1;
+}
+
+.fat-meta {
+    grid-column: span 2;
+}
+
+.fat-tabela {
+    grid-column: 1 / -1;
+}
+
+.fat-tabela summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.fat-tabela table {
+    display: inline-table;
+    margin: 12px 32px 0 0;
+    border-collapse: collapse;
+}
+
+.fat-tabela th,
+.fat-tabela td {
+    padding: 4px 16px 4px 0;
+    text-align: left;
+}
+
+.grafico {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.grade {
+    stroke: var(--grade);
+}
+
+.eixo {
+    fill: var(--texto-2);
+    font-size: 12px;
+}
+
+.rotulo {
+    fill: var(--texto);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.linha {
+    fill: none;
+    stroke: var(--serie-1);
+    stroke-width: 2;
+    stroke-linejoin: round;
+}
+
+.ponto {
+    fill: var(--serie-1);
+    stroke: var(--superficie);
+    stroke-width: 2;
+}
+
+.cruz {
+    stroke: var(--neutro);
+}
+
+.alvo {
+    fill: transparent;
+}
+
+.rosca {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.rosca svg {
+    width: 170px;
+    height: 170px;
+    flex: none;
+}
+
+.arco {
+    fill: none;
+    stroke-width: 34;
+}
+
+.legenda {
+    list-style: none;
+    font-size: 14px;
+}
+
+.legenda li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.amostra {
+    flex: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-top: 3px;
+}
+
+.barra-linha {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 4px 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.barra-trilho {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    height: 28px;
+}
+
+.barra {
+    height: 100%;
+    min-width: 2px;
+    border-radius: 0 4px 4px 0;
+}
+
+.barra-valor {
+    font-weight: 600;
+}
+
+.meta-campo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.meta-campo input {
+    width: 120px;
+    padding: 6px 8px;
+    font: inherit;
+    border: 1px solid var(--secondary-blue);
+    border-radius: 6px;
+}
+
+#dica {
+    position: fixed;
+    z-index: 20;
+    max-width: 260px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #0b0b0b;
+    color: #fff;
+    font-size: 13px;
+    pointer-events: none;
+}
+
+/* Janela de edição */
+.admin-dialogo {
+    border: none;
+    border-radius: 16px;
+    padding: 24px;
+    width: min(480px, calc(100vw - 32px));
+    margin: auto;
+}
+
+.admin-dialogo::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.admin-dialogo form {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-dialogo h2 {
+    font-family: var(--font-main);
+    color: var(--text-blue);
+    margin-bottom: 8px;
+}
+
+.admin-dialogo label {
+    font-weight: 600;
+    margin: 10px 0 4px;
+}
+
+.admin-dialogo input:not([type=checkbox]),
+.admin-dialogo select {
+    font: inherit;
+    padding: 10px 12px;
+    border: 1px solid var(--secondary-blue);
+    border-radius: 6px;
+}
+
+.campo-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dialogo-botoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.pendencias {
+    list-style: none;
+}
+
+.pendencias li {
+    padding: 8px 0;
+    border-bottom: 1px solid #edeef3;
+}
+
+.pendencias small {
+    color: #52514e;
+    margin-left: 4px;
+}
+
+@media (max-width: 1000px) {
+    .kanban,
+    .tarefas-topo,
+    .tarefas-base,
+    .fat-grade {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .fat-meta,
+    .fat-status {
+        grid-column: auto;
+    }
+
+    .kanban-coluna h2 .fa-chevron-right {
+        display: none;
+    }
+
+    .semana {
+        overflow-x: auto;
+        grid-template-columns: repeat(5, minmax(130px, 1fr));
+    }
+}

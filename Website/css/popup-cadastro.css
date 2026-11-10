@@ -1,0 +1,70 @@
+.popup-cadastro {
+    border: none;
+    border-radius: 16px;
+    padding: 0;
+    width: min(420px, calc(100vw - 32px));
+    font-family: var(--fonte-texto);
+}
+
+.popup-cadastro::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.popup-conteudo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 32px 24px 20px;
+    text-align: center;
+}
+
+.popup-conteudo h2 {
+    font-family: var(--fonte-titulo);
+    color: var(--azul);
+    margin: 0;
+}
+
+.popup-conteudo p {
+    margin: 0 0 8px;
+}
+
+.popup-fechar {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.popup-principal,
+.popup-entrar {
+    display: block;
+    padding: 12px;
+    border: 2px solid var(--azul);
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.popup-principal {
+    background: var(--azul);
+    color: var(--branco);
+}
+
+.popup-entrar {
+    color: var(--azul);
+}
+
+.popup-depois {
+    padding: 8px;
+    border: none;
+    background: none;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}

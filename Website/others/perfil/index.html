@@ -51,32 +51,94 @@
             <i class="fa-solid fa-user"></i>
         </div>
 
-        <div class="profile-info">
-            <div class="info-column col-1">
-                <div class="data-group">
-                    <span class="label">Nome do Usuário:</span>
-                    <span class="value">Anderson Barbosa</span>
+        <section id="perfil-dados" hidden>
+            <div class="profile-info">
+                <div class="info-column col-1">
+                    <div class="data-group">
+                        <span class="label">Nome do Usuário:</span>
+                        <span class="value" id="ver-nome"></span>
+                    </div>
+                    <div class="data-group">
+                        <span class="label">CPF:</span>
+                        <span class="value" id="ver-cpf"></span>
+                    </div>
+                    <div class="data-group">
+                        <span class="label">Data de nascimento:</span>
+                        <span class="value" id="ver-nascimento"></span>
+                    </div>
                 </div>
-                <div class="data-group">
-                    <span class="label">CPF:</span>
-                    <span class="value">132.576.978-09</span>
-                </div>
-                <div class="data-group">
-                    <span class="label">Data de nascimento:</span>
-                    <span class="value">29/mai/1999</span>
+                <div class="info-column col-2">
+                    <div class="data-group">
+                        <span class="label">E-mail:</span>
+                        <span class="value" id="ver-email"></span>
+                    </div>
+                    <div class="data-group">
+                        <span class="label">Número:</span>
+                        <span class="value" id="ver-telefone"></span>
+                    </div>
                 </div>
             </div>
-            <div class="info-column col-2">
-                <div class="data-group">
-                    <span class="label">E-mail:</span>
-                    <span class="value">barbosinha@gmail.com</span>
-                </div>
-                <div class="data-group">
-                    <span class="label">Número:</span>
-                    <span class="value">+55 (19) 99170-9876</span>
-                </div>
+            <div class="perfil-botoes">
+                <button type="button" class="perfil-btn" id="perfil-editar">Editar perfil</button>
+                <button type="button" class="perfil-btn secundario" id="perfil-sair">Sair</button>
+                <button type="button" class="perfil-btn perigo" id="perfil-excluir">Excluir perfil</button>
             </div>
-        </div>
+        </section>
+
+        <form id="login-form" class="form-perfil" novalidate hidden>
+            <h1>Entrar</h1>
+            <label for="login-email">E-mail ou usuário</label>
+            <input id="login-email" name="email" type="text" autocomplete="username">
+
+            <label for="login-senha">Senha</label>
+            <input id="login-senha" name="senha" type="password" autocomplete="current-password">
+
+            <p class="erro" id="erro-login" role="alert"></p>
+            <div class="perfil-botoes">
+                <button type="submit" class="perfil-btn" id="login-entrar">Entrar</button>
+            </div>
+            <p class="troca-acesso">Não tem conta? <button type="button" id="ir-cadastro">Cadastre-se</button></p>
+        </form>
+
+        <form id="perfil-form" class="form-perfil" novalidate hidden>
+            <h1 id="perfil-titulo"></h1>
+            <p class="troca-acesso" id="perfil-aviso">Já tem conta? <button type="button" id="ir-login">Entrar</button></p>
+            <label for="nome">Nome completo</label>
+            <input id="nome" name="nome" type="text" autocomplete="name" aria-describedby="erro-nome">
+            <p class="erro" id="erro-nome"></p>
+
+            <label for="cpf">CPF</label>
+            <input id="cpf" name="cpf" type="text" inputmode="numeric" placeholder="000.000.000-00" aria-describedby="erro-cpf">
+            <p class="erro" id="erro-cpf"></p>
+
+            <label for="nascimento">Data de nascimento</label>
+            <input id="nascimento" name="nascimento" type="date" autocomplete="bday" aria-describedby="erro-nascimento">
+            <p class="erro" id="erro-nascimento"></p>
+
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" autocomplete="email" aria-describedby="erro-email">
+            <p class="erro" id="erro-email"></p>
+
+            <label for="telefone">Telefone com DDD</label>
+            <input id="telefone" name="telefone" type="tel" autocomplete="tel-national" placeholder="(19) 99999-9999" aria-describedby="erro-telefone">
+            <p class="erro" id="erro-telefone"></p>
+
+            <div id="campos-senha">
+                <label for="senha">Senha</label>
+                <input id="senha" name="senha" type="password" autocomplete="new-password" aria-describedby="erro-senha">
+                <p class="erro" id="erro-senha"></p>
+
+                <label for="confirmar">Confirmar senha</label>
+                <input id="confirmar" name="confirmar" type="password" autocomplete="new-password" aria-describedby="erro-confirmar">
+                <p class="erro" id="erro-confirmar"></p>
+            </div>
+
+            <p class="erro" id="erro-geral" role="alert"></p>
+            <div class="perfil-botoes">
+                <button type="submit" class="perfil-btn" id="perfil-salvar"></button>
+                <button type="button" class="perfil-btn secundario" id="perfil-cancelar">Cancelar</button>
+            </div>
+        </form>
     </main>
 
     <footer>
@@ -84,8 +146,8 @@
     </footer>
     <button id="chat" aria-label="ChatBot"><i class="fa-solid fa-comments"></i></button>
 
-    <script src="./script.js"></script>
-<script src="../../js/pacotes-db.js"></script>
+    <script src="../../js/pacotes-db.js"></script>
     <script src="../../js/catalogo.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>

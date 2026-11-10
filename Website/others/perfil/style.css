@@ -135,6 +135,107 @@ footer p {
     color: var(--black);
 }
 
+/* Cadastro e edição do perfil */
+[hidden] {
+    display: none !important;
+}
+
+#perfil-dados {
+    width: 100%;
+}
+
+.form-perfil,
+#campos-senha {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-perfil {
+    width: 100%;
+    max-width: 480px;
+    padding: 0 16px;
+}
+
+.form-perfil h1 {
+    font-family: var(--font-condensed);
+    font-size: 32px;
+    color: var(--text-blue);
+    margin-bottom: 8px;
+}
+
+.troca-acesso {
+    margin-top: 16px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.troca-acesso button {
+    border: none;
+    background: none;
+    color: var(--primary-blue);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.form-perfil label {
+    font-family: var(--font-condensed);
+    font-weight: bold;
+    font-size: 18px;
+    color: var(--text-blue);
+    margin-top: 12px;
+    margin-bottom: 4px;
+}
+
+.form-perfil input {
+    font: inherit;
+    padding: 10px 12px;
+    border: 1px solid var(--secondary-blue);
+    border-radius: 6px;
+}
+
+.form-perfil input[aria-invalid="true"] {
+    border-color: #B3261E;
+}
+
+.erro {
+    color: #B3261E;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.perfil-botoes {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.perfil-btn {
+    font-family: var(--font-condensed);
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 24px;
+    border: 2px solid var(--primary-blue);
+    border-radius: 6px;
+    background-color: var(--primary-blue);
+    color: var(--white);
+    cursor: pointer;
+}
+
+.perfil-btn.secundario {
+    background-color: var(--white);
+    color: var(--primary-blue);
+}
+
+.perfil-btn.perigo {
+    background-color: var(--white);
+    border-color: #B3261E;
+    color: #B3261E;
+}
+
 /* Responsiveness */
 @media (max-width: 996px) {
     .profile-info {

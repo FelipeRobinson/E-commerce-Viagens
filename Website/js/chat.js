@@ -109,7 +109,7 @@
     // ---------- Interface ----------
     const css = document.createElement('link');
     css.rel = 'stylesheet';
-    css.href = BASE + 'chat.css';
+    css.href = BASE + 'css/chat.css';
     document.head.appendChild(css);
 
     function criar(tag, classe, texto) {
